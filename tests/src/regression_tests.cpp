@@ -13,7 +13,6 @@
 
 #include "safe_main.h"
 #include "../../marty_decimal.h"
-
 #include "../../undef_min_max.h"
 
 

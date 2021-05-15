@@ -33,3 +33,6 @@
 /tests/_out
 /tests/_run_logs
 /tests/.vs
+/github.txt
+/tests/vcxproj/boost.props
+/tests/vcxproj/*.user
