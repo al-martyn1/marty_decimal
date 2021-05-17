@@ -1,234 +1,83 @@
 Platform: x86
 BCD storage type: std::basic_string
 
-Builtin Float normal precision, normal numbers, '+'  elapsed time: 1344
-Cpp Float     normal precision, normal numbers, '+'  elapsed time: 11625
-Decimal       normal precision, normal numbers, '+'  elapsed time: 28172
-Performance log
-    builtin_dec_float : 4.77%, x 20.96
-    cpp_dec_float     : 41.26%, x 2.42
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, normal numbers, '-'  elapsed time: 1343
-Cpp Float     normal precision, normal numbers, '-'  elapsed time: 11985
-Decimal       normal precision, normal numbers, '-'  elapsed time: 29578
-Performance log
-    builtin_dec_float : 4.54%, x 22.03
-    cpp_dec_float     : 40.52%, x 2.47
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, normal numbers, '*'  elapsed time: 140
-Cpp Float     normal precision, normal numbers, '*'  elapsed time: 3797
-Decimal       normal precision, normal numbers, '*'  elapsed time: 6891
-Performance log
-    builtin_dec_float : 2.03%, x 49.26
-    cpp_dec_float     : 55.10%, x 1.81
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, normal numbers, '/'  elapsed time: 125
-Cpp Float     normal precision, normal numbers, '/'  elapsed time: 30266
-Decimal       normal precision, normal numbers, '/'  elapsed time: 366218
-Performance log
-    builtin_dec_float : 0.03%, x 3333.33
-    cpp_dec_float     : 8.26%, x 12.11
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, normal numbers, '==' elapsed time: 172
-Cpp Float     normal precision, normal numbers, '==' elapsed time: 531
-Decimal       normal precision, normal numbers, '==' elapsed time: 813
-Performance log
-    builtin_dec_float : 21.16%, x 4.73
-    cpp_dec_float     : 65.31%, x 1.53
-    Decimal           : 100%, x 1
-
-------------------------------
-Builtin Float normal precision, accounting numbers, '+'  elapsed time: 1328
-Cpp Float     normal precision, accounting numbers, '+'  elapsed time: 12703
-Decimal       normal precision, accounting numbers, '+'  elapsed time: 31047
-Performance log
-    builtin_dec_float : 4.28%, x 23.36
-    cpp_dec_float     : 40.92%, x 2.44
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, accounting numbers, '-'  elapsed time: 1438
-Cpp Float     normal precision, accounting numbers, '-'  elapsed time: 13046
-Decimal       normal precision, accounting numbers, '-'  elapsed time: 32563
-Performance log
-    builtin_dec_float : 4.42%, x 22.62
-    cpp_dec_float     : 40.06%, x 2.5
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, accounting numbers, '*'  elapsed time: 141
-Cpp Float     normal precision, accounting numbers, '*'  elapsed time: 4062
-Decimal       normal precision, accounting numbers, '*'  elapsed time: 11922
-Performance log
-    builtin_dec_float : 1.18%, x 84.75
-    cpp_dec_float     : 34.07%, x 2.94
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, accounting numbers, '/'  elapsed time: 141
-Cpp Float     normal precision, accounting numbers, '/'  elapsed time: 29671
-Decimal       normal precision, accounting numbers, '/'  elapsed time: 369750
-Performance log
-    builtin_dec_float : 0.04%, x 2500
-    cpp_dec_float     : 8.02%, x 12.47
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, accounting numbers, '==' elapsed time: 141
-Cpp Float     normal precision, accounting numbers, '==' elapsed time: 578
-Decimal       normal precision, accounting numbers, '==' elapsed time: 828
-Performance log
-    builtin_dec_float : 17.03%, x 5.87
-    cpp_dec_float     : 69.81%, x 1.43
-    Decimal           : 100%, x 1
-
-------------------------------
-Builtin Float long precision, big numbers, '+'  elapsed time: 16
-Cpp Float     long precision, big numbers, '+'  elapsed time: 359
-Decimal       long precision, big numbers, '+'  elapsed time: 1625
-Performance log
-    builtin_dec_float : 0.98%, x 102.04
-    cpp_dec_float     : 22.09%, x 4.53
-    Decimal           : 100%, x 1
-
-Builtin Float long precision, big numbers, '-'  elapsed time: 1422
-Cpp Float     long precision, big numbers, '-'  elapsed time: 74297
-Decimal       long precision, big numbers, '-'  elapsed time: 1750
-Performance log
-    builtin_dec_float : 81.26%, x 1.23
-    cpp_dec_float     : 4245.54%, x 0.02
-    Decimal           : 100%, x 1
-
 Builtin Float long precision, big numbers, '*'  elapsed time: 0
-Cpp Float     long precision, big numbers, '*'  elapsed time: 438
-Decimal       long precision, big numbers, '*'  elapsed time: 6687
+Cpp Float     long precision, big numbers, '*'  elapsed time: 922
+Decimal       long precision, big numbers, '*'  elapsed time: 13422
 Performance log
+
+        builtinFloatTickDecimal : 1
+        cppFloatTickDecimal     : 922
+        decimalTickDecimal      : 13422
+
+        percent: 0.01
+        perfRating: 10000
+
     builtin_dec_float : 0.01%, x 10000
-    cpp_dec_float     : 6.55%, x 15.27
+
+        percent: 6.87
+        perfRating: 14.56
+
+    cpp_dec_float     : 6.87%, x 14.56
+
+        percent: 100
+        perfRating: 1
+
     Decimal           : 100%, x 1
 
 Builtin Float long precision, big numbers, '/'  elapsed time: 0
-Cpp Float     long precision, big numbers, '/'  elapsed time: 2391
-Decimal       long precision, big numbers, '/'  elapsed time: 278203
+Cpp Float     long precision, big numbers, '/'  elapsed time: 4766
+Decimal       long precision, big numbers, '/'  elapsed time: 36531
 Performance log
-^CРежим вывода команд на экран (ECHO) включен.
-Режим вывода команд на экран (ECHO) включен.
-Режим вывода команд на экран (ECHO) включен.
+
+        builtinFloatTickDecimal : 1
+        cppFloatTickDecimal     : 4766
+        decimalTickDecimal      : 36531
+
+        percent: 0.00
+Error: runtime_error: marty::Decimal::div: division by zero. Divisor m_sign is not a zero, but Divisor m_number is actually zero
+ 
+ 
+ 
 --------------------------------------------------------------------------------------------------------------------------------------------------- 
-Режим вывода команд на экран (ECHO) включен.
-Режим вывода команд на экран (ECHO) включен.
-Режим вывода команд на экран (ECHO) включен.
+ 
+ 
+ 
 Platform: x64
 BCD storage type: std::basic_string
 
-Builtin Float normal precision, normal numbers, '+'  elapsed time: 3312
-Cpp Float     normal precision, normal numbers, '+'  elapsed time: 10203
-Decimal       normal precision, normal numbers, '+'  elapsed time: 24391
+Builtin Float long precision, big numbers, '*'  elapsed time: 16
+Cpp Float     long precision, big numbers, '*'  elapsed time: 531
+Decimal       long precision, big numbers, '*'  elapsed time: 7828
 Performance log
-    builtin_dec_float : 13.58%, x 7.36
-    cpp_dec_float     : 41.83%, x 2.39
-    Decimal           : 100%, x 1
 
-Builtin Float normal precision, normal numbers, '-'  elapsed time: 3156
-Cpp Float     normal precision, normal numbers, '-'  elapsed time: 10500
-Decimal       normal precision, normal numbers, '-'  elapsed time: 25688
-Performance log
-    builtin_dec_float : 12.29%, x 8.14
-    cpp_dec_float     : 40.88%, x 2.45
-    Decimal           : 100%, x 1
+        builtinFloatTickDecimal : 16
+        cppFloatTickDecimal     : 531
+        decimalTickDecimal      : 7828
 
-Builtin Float normal precision, normal numbers, '*'  elapsed time: 312
-Cpp Float     normal precision, normal numbers, '*'  elapsed time: 1391
-Decimal       normal precision, normal numbers, '*'  elapsed time: 5390
-Performance log
-    builtin_dec_float : 5.79%, x 17.27
-    cpp_dec_float     : 25.81%, x 3.87
-    Decimal           : 100%, x 1
+        percent: 0.20
+        perfRating: 500
 
-Builtin Float normal precision, normal numbers, '/'  elapsed time: 313
-Cpp Float     normal precision, normal numbers, '/'  elapsed time: 10359
-Decimal       normal precision, normal numbers, '/'  elapsed time: 275594
-Performance log
-    builtin_dec_float : 0.11%, x 909.09
-    cpp_dec_float     : 3.76%, x 26.6
-    Decimal           : 100%, x 1
+    builtin_dec_float : 0.20%, x 500
 
-Builtin Float normal precision, normal numbers, '==' elapsed time: 312
-Cpp Float     normal precision, normal numbers, '==' elapsed time: 579
-Decimal       normal precision, normal numbers, '==' elapsed time: 921
-Performance log
-    builtin_dec_float : 33.88%, x 2.95
-    cpp_dec_float     : 62.87%, x 1.59
-    Decimal           : 100%, x 1
+        percent: 6.78
+        perfRating: 14.75
 
-------------------------------
-Builtin Float normal precision, accounting numbers, '+'  elapsed time: 3141
-Cpp Float     normal precision, accounting numbers, '+'  elapsed time: 11328
-Decimal       normal precision, accounting numbers, '+'  elapsed time: 27313
-Performance log
-    builtin_dec_float : 11.50%, x 8.7
-    cpp_dec_float     : 41.47%, x 2.41
-    Decimal           : 100%, x 1
+    cpp_dec_float     : 6.78%, x 14.75
 
-Builtin Float normal precision, accounting numbers, '-'  elapsed time: 3187
-Cpp Float     normal precision, accounting numbers, '-'  elapsed time: 11594
-Decimal       normal precision, accounting numbers, '-'  elapsed time: 28234
-Performance log
-    builtin_dec_float : 11.29%, x 8.86
-    cpp_dec_float     : 41.06%, x 2.44
-    Decimal           : 100%, x 1
+        percent: 100
+        perfRating: 1
 
-Builtin Float normal precision, accounting numbers, '*'  elapsed time: 313
-Cpp Float     normal precision, accounting numbers, '*'  elapsed time: 1485
-Decimal       normal precision, accounting numbers, '*'  elapsed time: 9234
-Performance log
-    builtin_dec_float : 3.39%, x 29.5
-    cpp_dec_float     : 16.08%, x 6.22
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, accounting numbers, '/'  elapsed time: 313
-Cpp Float     normal precision, accounting numbers, '/'  elapsed time: 10531
-Decimal       normal precision, accounting numbers, '/'  elapsed time: 281984
-Performance log
-    builtin_dec_float : 0.11%, x 909.09
-    cpp_dec_float     : 3.73%, x 26.81
-    Decimal           : 100%, x 1
-
-Builtin Float normal precision, accounting numbers, '==' elapsed time: 313
-Cpp Float     normal precision, accounting numbers, '==' elapsed time: 625
-Decimal       normal precision, accounting numbers, '==' elapsed time: 906
-Performance log
-    builtin_dec_float : 34.55%, x 2.89
-    cpp_dec_float     : 68.98%, x 1.45
-    Decimal           : 100%, x 1
-
-------------------------------
-Builtin Float long precision, big numbers, '+'  elapsed time: 16
-Cpp Float     long precision, big numbers, '+'  elapsed time: 312
-Decimal       long precision, big numbers, '+'  elapsed time: 1188
-Performance log
-    builtin_dec_float : 1.35%, x 74.07
-    cpp_dec_float     : 26.26%, x 3.81
-    Decimal           : 100%, x 1
-
-Builtin Float long precision, big numbers, '-'  elapsed time: 3156
-Cpp Float     long precision, big numbers, '-'  elapsed time: 60297
-Decimal       long precision, big numbers, '-'  elapsed time: 1282
-Performance log
-    builtin_dec_float : 246.18%, x 0.41
-    cpp_dec_float     : 4703.35%, x 0.02
-    Decimal           : 100%, x 1
-
-Builtin Float long precision, big numbers, '*'  elapsed time: 0
-Cpp Float     long precision, big numbers, '*'  elapsed time: 250
-Decimal       long precision, big numbers, '*'  elapsed time: 3843
-Performance log
-    builtin_dec_float : 0.03%, x 3333.33
-    cpp_dec_float     : 6.51%, x 15.36
     Decimal           : 100%, x 1
 
 Builtin Float long precision, big numbers, '/'  elapsed time: 0
-Cpp Float     long precision, big numbers, '/'  elapsed time: 1359
-Decimal       long precision, big numbers, '/'  elapsed time: 195203
+Cpp Float     long precision, big numbers, '/'  elapsed time: 2656
+Decimal       long precision, big numbers, '/'  elapsed time: 25313
 Performance log
-^C
+
+        builtinFloatTickDecimal : 1
+        cppFloatTickDecimal     : 2656
+        decimalTickDecimal      : 25313
+
+        percent: 0.00
+Error: runtime_error: marty::Decimal::div: division by zero. Divisor m_sign is not a zero, but Divisor m_number is actually zero

@@ -1292,6 +1292,9 @@ MARTY_DECIMAL_MAIN()
     //DECIMAL_OP_TEST( 4.12, * , 3.457, "14.24284" );
     DECIMAL_OP_TEST( "89.253464", * ,  "35.64745", "3181.6583952668" ); // 89.253464*35.64745 = 3181.6583952668
     DECIMAL_OP_TEST( "89.253464", / ,  "35.64745", "2.503782570702813244" ); // 89.253464/35.64745 = 2.5037825707 0281324470 6143076152 712185584102088648697171887470211754276953891512576635916454052113124501191529828921844339496934563341837915
+    DECIMAL_OP_TEST( "0.0000001", / ,  "3000000000000000000000", "0.0000000000000000000000000000333" );
+
+
                                             // 3181.6583952668
                                             // 3181.653790004
     // Это с округлением (для того, чтобы результат влезал в int64) перед умножением
@@ -1852,17 +1855,17 @@ MARTY_DECIMAL_MAIN()
 
     #endif
     
-    cout << "Elapsed for double             : " << doubleT     << endl;
-    cout << "Elapsed for marty::Decimal(3)  : " << decimalT3   << endl;
-    cout << "Elapsed for marty::Decimal(6)  : " << decimalT6   << endl;
-    cout << "Elapsed for marty::Decimal(9)  : " << decimalT9   << endl;
-    cout << "Elapsed for marty::Decimal(12) : " << decimalT12  << endl;
-    cout << "Elapsed for marty::Decimal(15) : " << decimalT15  << endl;
-    cout << "Elapsed for marty::Decimal(16) : " << decimalT16  << endl;
-    cout << "Elapsed for marty::Decimal(18) : " << decimalT18  << endl;
-    cout << "Elapsed for marty::Decimal(50) : " << decimalT50  << endl;
-    cout << "Elapsed for marty::Decimal(100): " << decimalT100 << endl;
-    cout << "Elapsed for marty::Decimal(200): " << decimalT200 << endl;
+    cout << "Muller's Recurrence Test: Elapsed for double             : " << doubleT     << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(3)  : " << decimalT3   << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(6)  : " << decimalT6   << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(9)  : " << decimalT9   << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(12) : " << decimalT12  << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(15) : " << decimalT15  << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(16) : " << decimalT16  << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(18) : " << decimalT18  << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(50) : " << decimalT50  << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(100): " << decimalT100 << endl;
+    cout << "Muller's Recurrence Test: Elapsed for marty::Decimal(200): " << decimalT200 << endl;
 
     cout << "------------------------------" << endl << endl << endl;
 

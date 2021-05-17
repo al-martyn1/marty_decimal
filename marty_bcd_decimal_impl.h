@@ -360,6 +360,11 @@ Decimal& Decimal::div( const Decimal &d, int precision )
         throw std::runtime_error("marty::Decimal::div: division by zero");
     }
 
+    if (bcd::checkForZero( d.m_number ))
+    {
+        throw std::runtime_error("marty::Decimal::div: division by zero. Divisor m_sign is not a zero, but Divisor m_number is actually zero");
+    }
+
     // Для деления знак получается по тем же правилам, что и для умножения
 
     m_sign = m_sign * d.m_sign;
@@ -642,7 +647,7 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
 
 //----------------------------------------------------------------------------
 inline
-Decimal& Decimal::roundingImpl( int requestedPrecision, RoundingMethod roundingMethod )
+Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod roundingMethod )
 {
     if (roundingMethod==RoundingMethod::roundingInvalid)
     {
@@ -712,7 +717,22 @@ Decimal& Decimal::roundingImpl( int requestedPrecision, RoundingMethod roundingM
 
     return *this;
 
+}
 
+//----------------------------------------------------------------------------
+inline
+Decimal& Decimal::roundingImpl ( int requestedPrecision, RoundingMethod roundingMethod )
+{
+    roundingImpl1(requestedPrecision, roundingMethod);
+
+    if (bcd::checkForZero( m_number ))
+    {
+        m_sign = 0;
+        m_precision = 0;
+        bcd::clearShrink(m_number);
+    }
+
+    return *this;
 }
 
 //----------------------------------------------------------------------------

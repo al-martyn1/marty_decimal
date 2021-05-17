@@ -1225,23 +1225,23 @@ int rawMultiplication( raw_bcd_number_t &multRes
 inline
 bool rawDivisionCheckContinueCondition( int dividendPrecision, int divisorPrecision
                                       , int  deltaCmp
-                                      , bool relativeDelta
+                                      //, bool relativeDelta
                                       )
 {
     int delta = dividendPrecision - divisorPrecision;
 
-    if (relativeDelta)
+    //if (relativeDelta)
     {
         if (delta < deltaCmp)
             return true; // continue division
         return false;
     }
-    else
-    {
-        // absolute precision required
-        // Hm-m-m
-        throw std::runtime_error("rawDivisionCheckContinueCondition: absolute precision not implemented");
-    }
+    // else
+    // {
+    //     // absolute precision required
+    //     // Hm-m-m
+    //     throw std::runtime_error("rawDivisionCheckContinueCondition: absolute precision not implemented");
+    // }
 
     return false;
 
@@ -1254,9 +1254,11 @@ int rawDivision( raw_bcd_number_t &quotient
                , raw_bcd_number_t dividend, int dividendPrecision
                , raw_bcd_number_t divisor , int divisorPrecision
                , int  deltaCmp = MARTY_BCD_DEFAULT_DIVISION_PRECISION
-               , bool relativeDelta = true
+               //, bool relativeDelta = true
                )
 {
+    //bool relativeDelta = true;
+
     // Удаляем все нули справа от значащих цифр, до точки или после - не важно
     dividendPrecision = reducePrecisionFull( dividend, dividendPrecision );
     divisorPrecision  = reducePrecisionFull( divisor , divisorPrecision  );
@@ -1296,14 +1298,17 @@ int rawDivision( raw_bcd_number_t &quotient
 
     raw_bcd_number_t tmp;
 
+    unsigned nonZeroDigits = 0;
+
     quotient.insert( quotient.begin(), 1, 0 );
 
-    while( rawDivisionCheckContinueCondition( dividendPrecision, divisorPrecision, deltaCmp, relativeDelta ) )
+    // Делим до тех пор, пока не получим хотя бы 3 значащих цифры, или до заданной точности
+    while( rawDivisionCheckContinueCondition( dividendPrecision, divisorPrecision, deltaCmp /* , relativeDelta */  )  || nonZeroDigits<3 ) 
     {
         if (checkForZero( dividend ) )
             break;
 
-        while( compareRaws( dividend,                 0, divisor ,                0 ) < 0 )
+        while( compareRaws( dividend, 0, divisor , 0 ) < 0 )
         {
             dividend.insert( dividend.begin(), 1, 0 );
             ++dividendPrecision;
@@ -1316,6 +1321,9 @@ int rawDivision( raw_bcd_number_t &quotient
             tmp.swap(dividend);
             ++quotient[0];
         }
+
+        if (quotient[0]>0)
+           ++nonZeroDigits;
 
     }
     

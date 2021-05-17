@@ -45,6 +45,8 @@
 
 // #define EXCLUDE_BUILTIN_FROM_COMPARIZON
 
+// #define DEBUG_PERF_LOG
+
 
 
 #if !defined(PROFILING)
@@ -55,12 +57,15 @@
     #define NUM_OF_SUBTRACTION_TEST_ITERATIONS         200000u
     #define NUM_OF_MULTIPLICATION_ITERATIONS           20000u
     #define NUM_OF_DIVISION_ITERATIONS                 20000u
+    #define NUM_OF_COMPARE_ITERATIONS                  200000u
    
     // For long numbers test
     #define NUM_OF_LNT_ADDITION_TEST_ITERATIONS        1000u
     #define NUM_OF_LNT_SUBTRACTION_TEST_ITERATIONS     1000u
-    #define NUM_OF_LNT_MULTIPLICATION_ITERATIONS       50u
-    #define NUM_OF_LNT_DIVISION_ITERATIONS             50u
+    #define NUM_OF_LNT_MULTIPLICATION_ITERATIONS       200u
+    #define NUM_OF_LNT_DIVISION_ITERATIONS             200u
+    #define NUM_OF_LNT_COMPARE_ITERATIONS              1000u
+
 
 #else
 
@@ -70,12 +75,14 @@
     #define NUM_OF_SUBTRACTION_TEST_ITERATIONS         5000u
     #define NUM_OF_MULTIPLICATION_ITERATIONS           500u
     #define NUM_OF_DIVISION_ITERATIONS                 500u
+    #define NUM_OF_COMPARE_ITERATIONS                  500u
    
     // For long numbers test
     #define NUM_OF_LNT_ADDITION_TEST_ITERATIONS        500u
     #define NUM_OF_LNT_SUBTRACTION_TEST_ITERATIONS     500u
     #define NUM_OF_LNT_MULTIPLICATION_ITERATIONS       5u
     #define NUM_OF_LNT_DIVISION_ITERATIONS             5u
+    #define NUM_OF_LNT_COMPARE_ITERATIONS              5u
 
 #endif
 
@@ -555,19 +562,80 @@ void showPerformancePercents( std::uint32_t builtinFloatTick
     #endif
 
     marty::Decimal perfRating = 0;
+    marty::Decimal percent    = 0;
 
     cout << "Performance log" << endl << flush;
 
-    #if !defined(EXCLUDE_BUILTIN_FROM_COMPARIZON)
-    perfRating = makePercentReverseRelatio(builtinFloatTickDecimal.getPercentOf(decimalTickDecimal));
-    cout << "    builtin_dec_float : " << builtinFloatTickDecimal .getPercentOf(decimalTickDecimal) << "%, x " << perfRating << endl << flush;
+    #if defined(DEBUG_PERF_LOG)
+
+        cout << endl << flush;
+        cout << "        builtinFloatTickDecimal : " << builtinFloatTickDecimal << endl << flush;
+        cout << "        cppFloatTickDecimal     : " << cppFloatTickDecimal     << endl << flush;
+        cout << "        decimalTickDecimal      : " << decimalTickDecimal      << endl << flush;
+        cout << endl << flush;
+
     #endif
 
-    perfRating = makePercentReverseRelatio(cppFloatTickDecimal   .getPercentOf(decimalTickDecimal));
-    cout << "    cpp_dec_float     : " << cppFloatTickDecimal    .getPercentOf(decimalTickDecimal) << "%, x " << perfRating << endl << flush;
+    #if !defined(EXCLUDE_BUILTIN_FROM_COMPARIZON)
 
-    perfRating = makePercentReverseRelatio(decimalTickDecimal    .getPercentOf(decimalTickDecimal));
-    cout << "    Decimal           : " << decimalTickDecimal     .getPercentOf(decimalTickDecimal) << "%, x " << perfRating << endl << flush;
+        percent    = builtinFloatTickDecimal.getPercentOf(decimalTickDecimal);
+        if (percent.isZero())
+            percent = marty::Decimal("0.000001");
+       
+        #if defined(DEBUG_PERF_LOG)
+            cout << "        percent: " << percent << endl << flush;
+        #endif
+
+        perfRating = makePercentReverseRelatio( percent );
+
+        #if defined(DEBUG_PERF_LOG)
+            cout << "        perfRating: " << perfRating << endl << flush;
+            cout << endl << flush;
+        #endif
+
+        cout << "    builtin_dec_float : "  <<  percent << "%" << flush << ", x " << perfRating << endl << flush;
+
+    #endif
+
+
+
+    percent    = cppFloatTickDecimal    .getPercentOf(decimalTickDecimal);
+    if (percent.isZero())
+        percent = marty::Decimal("0.000001");
+
+    #if defined(DEBUG_PERF_LOG)
+        cout << endl << flush;
+        cout << "        percent: " << percent << endl << flush;
+    #endif
+
+    perfRating = makePercentReverseRelatio( percent);
+
+    #if defined(DEBUG_PERF_LOG)
+        cout << "        perfRating: " << perfRating << endl << flush;
+        cout << endl << flush;
+    #endif
+
+    cout << "    cpp_dec_float     : "   << percent << "%" << flush << ", x " << perfRating << endl << flush;
+
+
+
+    percent    = decimalTickDecimal     .getPercentOf(decimalTickDecimal);
+    if (percent.isZero())
+        percent = marty::Decimal("0.000001");
+
+    #if defined(DEBUG_PERF_LOG)
+        cout << endl << flush;
+        cout << "        percent: " << percent << endl << flush;
+    #endif
+
+    perfRating = makePercentReverseRelatio( percent );
+
+    #if defined(DEBUG_PERF_LOG)
+        cout << "        perfRating: " << perfRating << endl << flush;
+        cout << endl << flush;
+    #endif
+
+    cout << "    Decimal           : "   << percent << "%" << flush << ", x " << perfRating << endl << flush;
 
     //cout << std::flush;
 
@@ -743,36 +811,6 @@ MARTY_DECIMAL_MAIN()
 
 
 
-    #if 0
-
-    #define TEST_IMPL( src, dst, op, numIters, title )      \
-                                                            \
-    do                                                      \
-    {                                                       \
-        FastRandomGenerator rnd;                            \
-                                                            \
-        std::uint32_t startTick = getMillisecTick();        \
-                                                            \
-        for( auto i=0u; i!=numIters; ++i)                   \
-        {                                                   \
-            for( auto it=dst.begin(); it!=dst.end(); ++it ) \
-            {                                               \
-                auto idx1 = rnd.generate() % src.size();    \
-                auto idx2 = rnd.generate() % src.size();    \
-                                                            \
-                *it = src[idx1] op src[idx2];               \
-            }                                               \
-        }                                                   \
-                                                            \
-        std::uint32_t endTick = getMillisecTick();          \
-                                                            \
-        cout << title << " elapsed time: "                  \
-             << (endTick-startTick) << endl;                \
-                                                            \
-    } while(0)
-
-    #endif
-
     #define TEST_IMPL( src, dst, op, opType, numIters, title )                            \
                                                                                   \
                  performanceTest( src, dst, op##OperationImpl<opType>, numIters, title );
@@ -835,6 +873,8 @@ MARTY_DECIMAL_MAIN()
 
     #if !defined(PROFILING)
 
+      #if !defined(DEBUG_PERF_LOG)
+
         t1 = TEST_IMPL( builtinFloatNormNormalNumbers      , builtinFloatNormResultNumbers , plus , builtin_float_normal  , NUM_OF_ADDITION_TEST_ITERATIONS        , "Builtin Float normal precision, normal numbers, '+' " );
         t2 = TEST_IMPL( cppFloatNormNormalNumbers          , cppFloatNormResultNumbers     , plus , cpp_float_normal      , NUM_OF_ADDITION_TEST_ITERATIONS        , "Cpp Float     normal precision, normal numbers, '+' " );
         t3 = TEST_IMPL( decimalNormNormalNumbers           , decimalNormResultNumbers      , plus , decimal_normal        , NUM_OF_ADDITION_TEST_ITERATIONS        , "Decimal       normal precision, normal numbers, '+' " );
@@ -859,9 +899,9 @@ MARTY_DECIMAL_MAIN()
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
        
-        t1 = TEST_IMPL( builtinFloatNormNormalNumbers      , builtinFloatNormResultNumbers , cmp  , builtin_float_normal  , NUM_OF_DIVISION_ITERATIONS             , "Builtin Float normal precision, normal numbers, '=='" );
-        t2 = TEST_IMPL( cppFloatNormNormalNumbers          , cppFloatNormResultNumbers     , cmp  , cpp_float_normal      , NUM_OF_DIVISION_ITERATIONS             , "Cpp Float     normal precision, normal numbers, '=='" );
-        t3 = TEST_IMPL( decimalNormNormalNumbers           , decimalNormResultNumbers      , cmp  , decimal_normal        , NUM_OF_DIVISION_ITERATIONS             , "Decimal       normal precision, normal numbers, '=='" );
+        t1 = TEST_IMPL( builtinFloatNormNormalNumbers      , builtinFloatNormResultNumbers , cmp  , builtin_float_normal  , NUM_OF_COMPARE_ITERATIONS              , "Builtin Float normal precision, normal numbers, '=='" );
+        t2 = TEST_IMPL( cppFloatNormNormalNumbers          , cppFloatNormResultNumbers     , cmp  , cpp_float_normal      , NUM_OF_COMPARE_ITERATIONS              , "Cpp Float     normal precision, normal numbers, '=='" );
+        t3 = TEST_IMPL( decimalNormNormalNumbers           , decimalNormResultNumbers      , cmp  , decimal_normal        , NUM_OF_COMPARE_ITERATIONS              , "Decimal       normal precision, normal numbers, '=='" );
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
        
@@ -891,9 +931,9 @@ MARTY_DECIMAL_MAIN()
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
        
-        t1 = TEST_IMPL( builtinFloatNormAccountingNumbers  , builtinFloatNormResultNumbers , cmp  , builtin_float_normal  , NUM_OF_DIVISION_ITERATIONS             , "Builtin Float normal precision, accounting numbers, '=='" );
-        t2 = TEST_IMPL( cppFloatNormAccountingNumbers      , cppFloatNormResultNumbers     , cmp  , cpp_float_normal      , NUM_OF_DIVISION_ITERATIONS             , "Cpp Float     normal precision, accounting numbers, '=='" );
-        t3 = TEST_IMPL( decimalNormAccountingNumbers       , decimalNormResultNumbers      , cmp  , decimal_normal        , NUM_OF_DIVISION_ITERATIONS             , "Decimal       normal precision, accounting numbers, '=='" );
+        t1 = TEST_IMPL( builtinFloatNormAccountingNumbers  , builtinFloatNormResultNumbers , cmp  , builtin_float_normal  , NUM_OF_COMPARE_ITERATIONS              , "Builtin Float normal precision, accounting numbers, '=='" );
+        t2 = TEST_IMPL( cppFloatNormAccountingNumbers      , cppFloatNormResultNumbers     , cmp  , cpp_float_normal      , NUM_OF_COMPARE_ITERATIONS              , "Cpp Float     normal precision, accounting numbers, '=='" );
+        t3 = TEST_IMPL( decimalNormAccountingNumbers       , decimalNormResultNumbers      , cmp  , decimal_normal        , NUM_OF_COMPARE_ITERATIONS              , "Decimal       normal precision, accounting numbers, '=='" );
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
        
@@ -908,17 +948,22 @@ MARTY_DECIMAL_MAIN()
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
        
-        t1 = TEST_IMPL( builtinFloatLongRealBigNumbers     , builtinFloatLongResultNumbers , minus, builtin_float_long    , NUM_OF_SUBTRACTION_TEST_ITERATIONS     , "Builtin Float long precision, big numbers, '-' " );
-        t2 = TEST_IMPL( cppFloatLongRealBigNumbers         , cppFloatLongResultNumbers     , minus, cpp_float_long        , NUM_OF_SUBTRACTION_TEST_ITERATIONS     , "Cpp Float     long precision, big numbers, '-' " );
+        t1 = TEST_IMPL( builtinFloatLongRealBigNumbers     , builtinFloatLongResultNumbers , minus, builtin_float_long    , NUM_OF_LNT_SUBTRACTION_TEST_ITERATIONS , "Builtin Float long precision, big numbers, '-' " );
+        t2 = TEST_IMPL( cppFloatLongRealBigNumbers         , cppFloatLongResultNumbers     , minus, cpp_float_long        , NUM_OF_LNT_SUBTRACTION_TEST_ITERATIONS , "Cpp Float     long precision, big numbers, '-' " );
         t3 = TEST_IMPL( decimalLongRealBigNumbers          , decimalLongResultNumbers      , minus, decimal_long          , NUM_OF_LNT_SUBTRACTION_TEST_ITERATIONS , "Decimal       long precision, big numbers, '-' " );
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
        
+      #endif // DEBUG_PERF_LOG
+
+        // Нужно для разогрева, поэтому хотя для DEBUG_PERF_LOG и не нужно, всё равно выполняем
+
         t1 = TEST_IMPL( builtinFloatLongRealBigNumbers     , builtinFloatLongResultNumbers , mul  , builtin_float_long    , NUM_OF_LNT_MULTIPLICATION_ITERATIONS   , "Builtin Float long precision, big numbers, '*' " );
         t2 = TEST_IMPL( cppFloatLongRealBigNumbers         , cppFloatLongResultNumbers     , mul  , cpp_float_long        , NUM_OF_LNT_MULTIPLICATION_ITERATIONS   , "Cpp Float     long precision, big numbers, '*' " );
         t3 = TEST_IMPL( decimalLongRealBigNumbers          , decimalLongResultNumbers      , mul  , decimal_long          , NUM_OF_LNT_MULTIPLICATION_ITERATIONS   , "Decimal       long precision, big numbers, '*' " );
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
+
        
         t1 = TEST_IMPL( builtinFloatLongRealBigNumbers     , builtinFloatLongResultNumbers , div  , builtin_float_long    , NUM_OF_LNT_DIVISION_ITERATIONS         , "Builtin Float long precision, big numbers, '/' " );
         t2 = TEST_IMPL( cppFloatLongRealBigNumbers         , cppFloatLongResultNumbers     , div  , cpp_float_long        , NUM_OF_LNT_DIVISION_ITERATIONS         , "Cpp Float     long precision, big numbers, '/' " );
@@ -926,9 +971,9 @@ MARTY_DECIMAL_MAIN()
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
        
-        t1 = TEST_IMPL( builtinFloatLongRealBigNumbers     , builtinFloatLongResultNumbers , cmp  , builtin_float_long    , NUM_OF_LNT_DIVISION_ITERATIONS         , "Builtin Float long precision, big numbers, '=='" );
-        t2 = TEST_IMPL( cppFloatLongRealBigNumbers         , cppFloatLongResultNumbers     , cmp  , cpp_float_long        , NUM_OF_LNT_DIVISION_ITERATIONS         , "Cpp Float     long precision, big numbers, '=='" );
-        t3 = TEST_IMPL( decimalLongRealBigNumbers          , decimalLongResultNumbers      , cmp  , decimal_long          , NUM_OF_LNT_DIVISION_ITERATIONS         , "Decimal       long precision, big numbers, '=='" );
+        t1 = TEST_IMPL( builtinFloatLongRealBigNumbers     , builtinFloatLongResultNumbers , cmp  , builtin_float_long    , NUM_OF_LNT_COMPARE_ITERATIONS          , "Builtin Float long precision, big numbers, '=='" );
+        t2 = TEST_IMPL( cppFloatLongRealBigNumbers         , cppFloatLongResultNumbers     , cmp  , cpp_float_long        , NUM_OF_LNT_COMPARE_ITERATIONS          , "Cpp Float     long precision, big numbers, '=='" );
+        t3 = TEST_IMPL( decimalLongRealBigNumbers          , decimalLongResultNumbers      , cmp  , decimal_long          , NUM_OF_LNT_COMPARE_ITERATIONS          , "Decimal       long precision, big numbers, '=='" );
         showPerformancePercents( t1, t2, t3 );
         cout << endl;
        

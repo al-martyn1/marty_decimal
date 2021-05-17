@@ -8,7 +8,7 @@
 @set MASK=%INPUT_MASK%
 @if "%INPUT_EXT%"=="" set MASK=%INPUT_MASK%.exe
 
-@echo MASK - %MASK%
+@echo MASK         - %MASK%
 
 @set TSET=msvc2017
 @if "%2" NEQ "" set TSET=%2

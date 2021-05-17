@@ -392,7 +392,8 @@ public:
 protected:
 
     Decimal& roundingImpl2( int requestedPrecision, RoundingMethod roundingMethod );
-    Decimal& roundingImpl( int requestedPrecision, RoundingMethod roundingMethod );
+    Decimal& roundingImpl1( int requestedPrecision, RoundingMethod roundingMethod );
+    Decimal& roundingImpl ( int requestedPrecision, RoundingMethod roundingMethod );
 
 
     Decimal( int sign, int precision, bcd::raw_bcd_number_t number )
