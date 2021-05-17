@@ -257,47 +257,6 @@ bool decimalOpTest( unsigned &totalOpTests, unsigned &totalOpTestsFailed
 
 
 //----------------------------------------------------------------------------
-template<typename IntType1, typename IntType2, typename IntTypeRes>
-void martyLongIntMultiplyTestHelper( IntType1 u1, IntType2 u2, IntTypeRes &res )
-{
-    std::uint16_t ul1[ marty::calcNumberOfUint16ItemsInLong<IntType1>() ];
-    marty::convertToLongUnsigned( u1, &ul1[0] );
-
-    std::uint16_t ul2[ marty::calcNumberOfUint16ItemsInLong<IntType2>() ];
-    marty::convertToLongUnsigned( u2, &ul2[0] );
-
-    std::uint16_t ulRes[ marty::calcNumberOfUint16ItemsInLong<IntType1>() + marty::calcNumberOfUint16ItemsInLong<IntType2>() ];
-
-    marty::multiplicationOfUnsignedLongInts( &ul1[0], marty::calcNumberOfUint16ItemsInLong<IntType1>()
-                                           , &ul2[0], marty::calcNumberOfUint16ItemsInLong<IntType2>()
-                                           , &ulRes[0], marty::calcNumberOfUint16ItemsInLong<IntType1>() + marty::calcNumberOfUint16ItemsInLong<IntType2>()
-                                           );
-
-    marty::convertFromLongUnsigned( res, &ulRes[0], marty::calcNumberOfUint16ItemsInLong<IntType1>() + marty::calcNumberOfUint16ItemsInLong<IntType2>() );
-
-}
-
-template<typename IntType>
-void martyLongIntSummTestHelper( IntType u1, IntType u2, IntType &res )
-{
-    std::uint16_t ul1[ marty::calcNumberOfUint16ItemsInLong<IntType>() ];
-    marty::convertToLongUnsigned( u1, &ul1[0] );
-
-    std::uint16_t ul2[ marty::calcNumberOfUint16ItemsInLong<IntType>() ];
-    marty::convertToLongUnsigned( u2, &ul2[0] );
-
-    std::uint16_t ulRes[ marty::calcNumberOfUint16ItemsInLong<IntType>() ];
-
-    marty::summationOfUnsignedLongInts( &ul1[0], marty::calcNumberOfUint16ItemsInLong<IntType>()
-                                      , &ul2[0], marty::calcNumberOfUint16ItemsInLong<IntType>()
-                                      , &ulRes[0], marty::calcNumberOfUint16ItemsInLong<IntType>()
-                                      );
-
-    marty::convertFromLongUnsigned( res, &ulRes[0], marty::calcNumberOfUint16ItemsInLong<IntType>() );
-
-}
-
-
 template <typename TParam, typename TResult = TParam> inline
 TResult quoteOnlyString( TParam p )
 {
@@ -351,56 +310,6 @@ MARTY_DECIMAL_MAIN()
     TEST_QUOTE_ONLY_STRING( quoteOnlyString(std::string("7s")) );
     */
 
-    // simple pretest
-    {
-
-        std::uint32_t u1 = 213251u; // u1  = 0x00034103á ul1 = { 0x4103, 0x0003 }
-        std::uint32_t u2 = 153754u; // u2  = 0x0002589a  ul2  = { 0x589a, 0x0002 }
-        // 0x4103 * 0x589a = 377496526 // 0x168023CE
-
-        std::uint64_t uRes; // 213251 * 153754 = 32788194254 (0x07A25423CE)
-        std::uint32_t sumRes;
-
-        martyLongIntMultiplyTestHelper( u1, u2, uRes );
-        cout << u1 << " x " << u2 << " = " << uRes << endl;
-
-        martyLongIntSummTestHelper( u1, u2, sumRes );
-        cout << u1 << " + " << u2 << " = " << sumRes << endl; // 213251+153754 = 367005
-
-
-        u1 = 54213251u;
-        u2 = 91153754u;
-
-        martyLongIntMultiplyTestHelper( u1, u2, uRes );
-        cout << u1 << " x " << u2 << " = " << uRes << endl;
-        // 54213251 * 91153754 = 4941741345194254
-
-        martyLongIntSummTestHelper( u1, u2, sumRes );
-        cout << u1 << " + " << u2 << " = " << sumRes << endl; // 54213251+91153754 = 145367005
-
-
-        u1 = 4213251u;  // 0x0040 4A03
-        u2 = 1153754u;  // 0x0011 9ADA
-        // 0x4A03*0x9ADA = 0x2CC4 D48E
-        // 0x4A03*0x0011 = 0x0004 EA33
-        //                             0x2CC9 BEC1
-        // 0x0040*0x9ADA = 0x0026 B680
-        //                             0x2CF0 7541
-        // 0x0040*0x0011 = 0x0000 0440
-        //                             0x2CF07981
-        
-        martyLongIntMultiplyTestHelper( u1, u2, uRes );
-        cout << u1 << " x " << u2 << " = " << uRes << endl;
-        // 4213251 * 1153754 =    4861055194254
-
-        martyLongIntSummTestHelper( u1, u2, sumRes );
-        cout << u1 << " + " << u2 << " = " << sumRes << endl; // 4213251+1153754 = 5367005
-
-     }
-
-    cout << endl;
-    cout << "------------------------------" << endl;
-    cout << endl;
 
 
     if (0)
