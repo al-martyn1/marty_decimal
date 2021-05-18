@@ -745,6 +745,14 @@ Decimal& Decimal::roundingImpl ( int requestedPrecision, RoundingMethod rounding
 
 //----------------------------------------------------------------------------
 inline
+Decimal& Decimal::round  ( int precision, RoundingMethod roundingMethod )
+{
+    roundingImpl( precision, roundingMethod );
+    return *this;
+}
+
+//----------------------------------------------------------------------------
+inline
 Decimal Decimal::rounded( int precision, RoundingMethod roundingMethod ) const
 {
     Decimal res = *this;
@@ -778,23 +786,101 @@ Decimal& Decimal::reciprocate( int precision )
 
 
 //----------------------------------------------------------------------------
+int Decimal::getMostSignificantDigitPower() const
+{
+
+    if (m_sign==0)
+    {
+        throw std::runtime_error("marty::Decimal::msp (getMostSignificantDigitPower): not valid for zero numbers");
+    }
+
+    if (bcd::checkForZero( m_number ))
+    {
+        throw std::runtime_error("marty::Decimal::msp (getMostSignificantDigitPower): not valid for zero numbers. Divisor m_sign is not a zero, but Divisor m_number is actually zero");
+    }
+
+    return bcd::getDecimalOrderByIndex( bcd::getMsdIndex(m_number), m_number, m_precision ); 
+}
+
+//----------------------------------------------------------------------------
+inline
+Decimal Decimal::implGetPercentOf ( const Decimal &scale, const Decimal &d ) const
+{
+    Decimal tmp = *this;
+    tmp.mul(scale);
+    tmp.div(d);
+    tmp.round( 2, RoundingMethod::roundMath ); // точнось - сотые доли
+    return tmp;
+
+/*
+    Decimal tmp = scale * *this;
+    
+    return (tmp / d).rounded( 2, RoundingMethod::roundMath );
+*/
+}
+
+//----------------------------------------------------------------------------
 inline
 Decimal Decimal::getPercentOf( const Decimal &d ) const
 {
-    //UNDONE: !!! Need to make correct rounding
-    Decimal tmp = Decimal(100) * *this;
-    //tmp.precisionExpandTo(2); // точнось - сотые доли процента
-    return (tmp / d).rounded( 2, RoundingMethod::roundMath );
+    return implGetPercentOf( Decimal(100), d );
 }
 
 //----------------------------------------------------------------------------
 inline
 Decimal Decimal::getPermilleOf( const Decimal &d ) const
 {
-    //UNDONE: !!! Need to make correct rounding
-    Decimal tmp = Decimal(1000) * *this;
-    //tmp.precisionExpandTo(2); // точнось - сотые доли промилле
-    return (tmp / d).rounded( 2, RoundingMethod::roundMath );
+    return implGetPercentOf( Decimal(1000), d );
+}
+
+//----------------------------------------------------------------------------
+inline
+Decimal Decimal::implGetExPercentOf ( const Decimal &scale, const Decimal &d, int precision, unsigned numSignificantDigits ) const
+{
+    if (precision<2)
+        precision = 2; // Два знака после запятой для процентов оставляем полюбасу
+
+    if (numSignificantDigits<1)
+        numSignificantDigits = 1;
+
+    Decimal tmp = *this;
+    tmp.mul(scale);
+
+    tmp.div( d, precision, numSignificantDigits+2 );
+
+    if (tmp.zer())
+        return tmp;
+
+    int msp = tmp.msp();
+    if (msp>0)
+        msp = 0;
+
+    msp = -msp;
+
+    if (msp<precision)
+        msp = precision;
+
+    if (msp>precision)
+    {
+        return tmp.rounded( msp+numSignificantDigits-1, RoundingMethod::roundMath );
+    }
+
+    return tmp.rounded( precision, RoundingMethod::roundMath );
+
+}
+
+//----------------------------------------------------------------------------
+inline
+Decimal Decimal::getExPercentOf ( const Decimal &d, int precision, unsigned numSignificantDigits ) const
+{
+    return implGetExPercentOf ( Decimal(100), d, precision, numSignificantDigits );
+}
+
+//----------------------------------------------------------------------------
+inline
+Decimal Decimal::getExPermilleOf( const Decimal &d, int precision, unsigned numSignificantDigits ) const
+{
+    return implGetExPercentOf ( Decimal(1000), d, precision, numSignificantDigits );
 }
 
 //----------------------------------------------------------------------------

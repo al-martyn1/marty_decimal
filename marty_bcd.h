@@ -606,14 +606,18 @@ int truncatePrecision( raw_bcd_number_t &bcdNumber, int precision, int newPrecis
             if (pAllTruncatedAreZeros)
                *pAllTruncatedAreZeros = allTruncatedAreZeros;
 
+            // обрез цифры
             raw_bcd_number_t::iterator eraseEnd = bcdNumber.begin();
             std::advance(eraseEnd, digitIndex);
 
+            /*
+            // А это вроде вообще не нужно
             for(raw_bcd_number_t::iterator it=bcdNumber.begin(); it!=eraseEnd; ++it )
             {
                 if (*it!=0)
                     allTruncatedAreZeros = false;
             }
+            */
 
             bcdNumber.erase( bcdNumber.begin(), eraseEnd );
 
@@ -621,18 +625,30 @@ int truncatePrecision( raw_bcd_number_t &bcdNumber, int precision, int newPrecis
         }
 
         lastTruncatedDigit = bcdNumber[digitIndex];
-        if (bcdNumber[digitIndex]!=0)
+        if (lastTruncatedDigit!=0)
             allTruncatedAreZeros = false;
-
     }
+
+    // Прошлись по всему вектору, но до требуемой точности так и не добрались
+    // Судя по всему, ведущие значащие нули обрезаны
+
+    // Значит, последняя обрезаемая цифра - 0, но вот были ли значащие цифры - 
+    // нам таки об этом говорит allTruncatedAreZeros
+
+    //clearShrink(bcdNumber);
+    bcdNumber.clear();
+    bcdNumber.push_back(0);
+    bcdNumber.shrink_to_fit();
+
 
     if (pLastTruncatedDigit)
        *pLastTruncatedDigit = 0; // lastTruncatedDigit;
 
     if (pAllTruncatedAreZeros)
-       *pAllTruncatedAreZeros = true; // allTruncatedAreZeros;
+       *pAllTruncatedAreZeros = allTruncatedAreZeros;
        
-    return precision;
+    // return precision;
+    return newPrecision;
 }
 
 //----------------------------------------------------------------------------

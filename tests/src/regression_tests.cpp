@@ -311,7 +311,6 @@ MARTY_DECIMAL_MAIN()
     */
 
 
-
     if (0)
     {
         cout << "Precision truncation calls for debug" << endl;
@@ -802,6 +801,7 @@ MARTY_DECIMAL_MAIN()
 
 
 
+
     #define DECIMAL_OP_TEST( val1, op, val2, strResForCompare )                             \
                     decimalOpTest( totalOpTests, totalOpTestsFailed                         \
                                  , val1, val2, strResForCompare                             \
@@ -1229,6 +1229,160 @@ MARTY_DECIMAL_MAIN()
         cout << "+++ All OP tests passed"  << endl;
 
     cout << "------------------------------" << endl << endl << endl;
+
+
+
+    #define DECIMAL_MSP_TEST( val, resForCompare )                                          \
+                do                                                                          \
+                {                                                                           \
+                    /*++totalCtorTests;*/                                                   \
+                    Decimal     decimal    = Decimal(val);                                  \
+                    std::string strDecimal = decimal.toString( /* precision - auto */ );    \
+                                                                                            \
+                    int pwr = decimal.msp();                                                \
+                                                                                            \
+                    bool bGood /* Johny */ = (pwr==resForCompare);                          \
+                    if (!bGood)                                                             \
+                    {                                                                       \
+                        /* ++totalCtorTestsFailed; */                                       \
+                    }                                                                       \
+                                                                                            \
+                                                                                            \
+                    if (!bGood)                                                             \
+                    {                                                                       \
+                        cout << "[" << (bGood ? "+" : "-") << "]  " << (decimal<0 ? "" : " ") << quoteOnlyString(val) << " converted to Decimal is \"" << strDecimal << "\""; \
+                        cout << endl;                                                       \
+                        cout << "    expected power value of " << resForCompare << endl;    \
+                        cout << "    got                     " << pwr << endl;              \
+                        cout << __FILE__ << ":" << __LINE__ << endl;                        \
+                    }                                                                       \
+                    else                                                                    \
+                    {                                                                       \
+                        cout << "[" << (bGood ? "+" : "-") << "]  " << (decimal<0 ? "" : " ") << quoteOnlyString(val); \
+                        cout << " - MSP is " << pwr << endl;                                \
+                    }                                                                       \
+                                                                                            \
+                    if (!bGood)                                                             \
+                        THROW_ERROR();                                                      \
+                                                                                            \
+                } while(0)
+
+
+    cout << "DECIMAL_MSP_TEST test suite" << endl;
+
+    DECIMAL_MSP_TEST( "3.1415" ,  0 );
+    DECIMAL_MSP_TEST( "0.0003" , -4 );
+    DECIMAL_MSP_TEST( "31415"  ,  4 );
+    DECIMAL_MSP_TEST( "1000"   ,  3 );
+    DECIMAL_MSP_TEST( "1"      ,  0 );
+    DECIMAL_MSP_TEST( "1000000000"    ,  9 );
+    DECIMAL_MSP_TEST( "123.000000001" ,  2 );
+    DECIMAL_MSP_TEST( "0.000000001"   , -9 );
+
+    cout << endl;
+
+    /*
+    cout << "Failed " << totalOpTestsFailed << " OP tests from total " << totalOpTests << endl;
+    if (!totalOpTestsFailed)
+        cout << "+++ All OP tests passed"  << endl;
+    */
+
+    cout << "------------------------------" << endl << endl << endl;
+
+
+    #define DECIMAL_PERCENT_TEST( val, valPercentOf, strResForCompare )                     \
+                do                                                                          \
+                {                                                                           \
+                     /* ++totalCtorTests; */                                                \
+                    Decimal  decVal           = Decimal(val);                               \
+                    Decimal  decValPercentOf  = Decimal(valPercentOf);                      \
+                    Decimal  decRes           = decVal.getPercentOf(decValPercentOf);       \
+                    std::string strRes        = decRes.toString( /* precision - auto */ );  \
+                    bool bGood /* Johny */    = decRes.checkIsExact(strResForCompare);      \
+                    if (!bGood)                                                             \
+                    {                                                                       \
+                        /* ++totalCtorTestsFailed; */                                       \
+                    }                                                                       \
+                    cout << "[" << (bGood ? "+" : "-") << "]  " << quoteOnlyString(val) << " as percent of " << quoteOnlyString(valPercentOf) << " is " << strRes << "%" << endl; \
+                    if (!bGood)                                                             \
+                    {                                                                       \
+                        cout << "    expected '" << strResForCompare << "%'" << endl;       \
+                        cout << __FILE__ << ":" << __LINE__ << endl;                        \
+                    }                                                                       \
+                                                                                            \
+                    if (!bGood)                                                             \
+                        THROW_ERROR();                                                      \
+                                                                                            \
+                } while(0)
+
+    #define DECIMAL_PERCENT_EX_TEST( val, valPercentOf, precision, numSignificantDigits, strResForCompare ) \
+                do                                                                          \
+                {                                                                           \
+                     /* ++totalCtorTests; */                                                \
+                    Decimal  decVal           = Decimal(val);                               \
+                    Decimal  decValPercentOf  = Decimal(valPercentOf);                      \
+                    Decimal  decRes           = decVal.getExPercentOf(decValPercentOf, precision, numSignificantDigits); \
+                    std::string strRes        = decRes.toString( /* precision - auto */ );  \
+                    bool bGood /* Johny */    = decRes.checkIsExact(strResForCompare);      \
+                    if (!bGood)                                                             \
+                    {                                                                       \
+                        /* ++totalCtorTestsFailed; */                                       \
+                    }                                                                       \
+                    cout << "[" << (bGood ? "+" : "-") << "]  " << quoteOnlyString(val) << " as percent of " << quoteOnlyString(valPercentOf) << " is " << strRes << "%" << endl; \
+                    if (!bGood)                                                             \
+                    {                                                                       \
+                        cout << "    expected '" << strResForCompare << "%'" << endl;       \
+                        cout << __FILE__ << ":" << __LINE__ << endl;                        \
+                    }                                                                       \
+                                                                                            \
+                    if (!bGood)                                                             \
+                        THROW_ERROR();                                                      \
+                                                                                            \
+                } while(0)
+
+
+    cout << "DECIMAL_PERCENT_TEST test suite" << endl;
+
+    cout << endl << "Percent tests" << endl << "---" << endl;
+
+    DECIMAL_PERCENT_TEST( "2" , "50", "4" );
+    DECIMAL_PERCENT_TEST( "50", "2" , "2500" );
+    DECIMAL_PERCENT_TEST( "4" , "10", "40" );
+    DECIMAL_PERCENT_TEST( "1" , "23556545", "0" );
+
+    cout << endl << "PercentEx tests" << endl << "---" << endl;
+
+    DECIMAL_PERCENT_EX_TEST( "1" , "23556545", 2, 5, "0.0000042451" );
+    DECIMAL_PERCENT_EX_TEST( "1" , "23556545", 2, 2, "0.0000042" );
+
+
+    cout << endl;
+
+    /*
+    cout << "Failed " << totalOpTestsFailed << " OP tests from total " << totalOpTests << endl;
+    if (!totalOpTestsFailed)
+        cout << "+++ All OP tests passed"  << endl;
+    */
+
+    cout << "------------------------------" << endl << endl << endl;
+                                
+    /*
+    {
+        marty::Decimal d2  = marty::Decimal(2);
+        marty::Decimal d50 = marty::Decimal(50);
+
+        //cout << d2 .getPercentOf(d50) << endl;
+        //cout << d50.getPercentOf(d2 ) << endl;
+
+        marty::Decimal d1   = marty::Decimal(1);
+        marty::Decimal dBig = marty::Decimal(23556545);
+
+        cout << d1.getPercentOf(dBig) << endl;
+        cout << d1.getExPercentOf(dBig, 2, 2 ) << endl;
+        cout << d1.getExPercentOf(dBig, 2, 5 ) << endl;
+
+    }
+    */
 
 
 

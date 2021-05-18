@@ -326,6 +326,11 @@ public:
 
     //------------------------------
 
+    int      msp   () const { return getMostSignificantDigitPower(); } //!< return Most Significant digit Power 
+
+    //------------------------------
+
+
 
 
     //------------------------------
@@ -347,6 +352,8 @@ public:
     //Decimal& minimizePrecisionImpl();
     int getLowestDecimalDigit() const;
     //void replaceLowestDecimalDigit( unum_t d );
+
+    int getMostSignificantDigitPower() const;
 
 
 //----------------------------------------------------------------------------
@@ -384,10 +391,14 @@ public:
 
 
     //------------------------------
-    Decimal getPercentOf( const Decimal &d ) const;
-    Decimal getPermilleOf( const Decimal &d ) const;
+    Decimal  getPercentOf ( const Decimal &d ) const;
+    Decimal  getPermilleOf( const Decimal &d ) const;
 
-    Decimal rounded( int precision, RoundingMethod roundingMethod ) const;
+    Decimal  getExPercentOf ( const Decimal &d, int precision, unsigned numSignificantDigits ) const;
+    Decimal  getExPermilleOf( const Decimal &d, int precision, unsigned numSignificantDigits ) const;
+
+    Decimal& round  ( int precision, RoundingMethod roundingMethod );
+    Decimal  rounded( int precision, RoundingMethod roundingMethod ) const;
 
 
 //----------------------------------------------------------------------------
@@ -396,6 +407,9 @@ protected:
     Decimal& roundingImpl2( int requestedPrecision, RoundingMethod roundingMethod );
     Decimal& roundingImpl1( int requestedPrecision, RoundingMethod roundingMethod );
     Decimal& roundingImpl ( int requestedPrecision, RoundingMethod roundingMethod );
+
+    Decimal implGetPercentOf ( const Decimal &scale, const Decimal &d ) const;
+    Decimal implGetExPercentOf ( const Decimal &scale, const Decimal &d, int precision, unsigned numSignificantDigits ) const;
 
 
     Decimal( int sign, int precision, bcd::raw_bcd_number_t number )
