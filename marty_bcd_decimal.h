@@ -235,7 +235,7 @@ public:
     Decimal& add( const Decimal &d );
     Decimal& sub( const Decimal &d );
     Decimal& mul( const Decimal &d );
-    Decimal& div( const Decimal &d, int precision = MARTY_DECIMAL_DEFAULT_DIVISION_PRECISION );
+    Decimal& div( const Decimal &d, int precision = -1, unsigned numSignificantDigits = (unsigned)-1 );
 
     //----------------------------------------------------------------------------
 
@@ -379,6 +379,8 @@ public:
     static int  getDivisionPrecision()                                                  { return m_divisionPrecision; }
     static void setDivisionPrecision( int p = MARTY_DECIMAL_DEFAULT_DIVISION_PRECISION) { m_divisionPrecision = p; }
 
+    static unsigned  getDivisionNumberOfSignificantDigits()             { return m_divisionNumberOfSignificantDigits; }
+    static void      setDivisionNumberOfSignificantDigits( unsigned n ) { m_divisionNumberOfSignificantDigits    = n; }
 
 
     //------------------------------
@@ -411,7 +413,8 @@ protected:
     // if >   0  - Exact precision will be used
     inline static int       m_outputPrecision = -1;
 
-    inline static int       m_divisionPrecision = MARTY_DECIMAL_DEFAULT_DIVISION_PRECISION;
+    inline static int       m_divisionPrecision          = MARTY_DECIMAL_DEFAULT_DIVISION_PRECISION;
+    inline static unsigned  m_divisionNumberOfSignificantDigits = 3;
 
 
 }; // class Decimal

@@ -1254,7 +1254,7 @@ int rawDivision( raw_bcd_number_t &quotient
                , raw_bcd_number_t dividend, int dividendPrecision
                , raw_bcd_number_t divisor , int divisorPrecision
                , int  deltaCmp = MARTY_BCD_DEFAULT_DIVISION_PRECISION
-               //, bool relativeDelta = true
+               , unsigned nonZeroDigitsMin = 3
                )
 {
     //bool relativeDelta = true;
@@ -1303,7 +1303,7 @@ int rawDivision( raw_bcd_number_t &quotient
     quotient.insert( quotient.begin(), 1, 0 );
 
     // Делим до тех пор, пока не получим хотя бы 3 значащих цифры, или до заданной точности
-    while( rawDivisionCheckContinueCondition( dividendPrecision, divisorPrecision, deltaCmp /* , relativeDelta */  )  || nonZeroDigits<3 ) 
+    while( rawDivisionCheckContinueCondition( dividendPrecision, divisorPrecision, deltaCmp /* , relativeDelta */  )  || nonZeroDigits<nonZeroDigitsMin ) 
     {
         if (checkForZero( dividend ) )
             break;

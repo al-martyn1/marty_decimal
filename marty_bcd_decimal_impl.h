@@ -353,8 +353,9 @@ Decimal& Decimal::mul( const Decimal &d )
 
 //----------------------------------------------------------------------------
 inline
-Decimal& Decimal::div( const Decimal &d, int precision )
+Decimal& Decimal::div( const Decimal &d, int precision, unsigned numSignificantDigits )
 {
+    //m_divisionNumberOfSignificantDigits
     if (d.m_sign==0)
     {
         throw std::runtime_error("marty::Decimal::div: division by zero");
@@ -380,9 +381,16 @@ Decimal& Decimal::div( const Decimal &d, int precision )
         return *this;
     }
 
+    if (precision<0)
+        precision = m_divisionPrecision;
+
+    if (numSignificantDigits==(unsigned)-1)
+        numSignificantDigits = m_divisionNumberOfSignificantDigits;
+
+
     bcd::raw_bcd_number_t resNumber;
 
-    m_precision = bcd::rawDivision( resNumber, m_number, m_precision, d.m_number, d.m_precision, precision );
+    m_precision = bcd::rawDivision( resNumber, m_number, m_precision, d.m_number, d.m_precision, precision, numSignificantDigits );
 
     if (bcd::checkForZero( resNumber ))
     {
