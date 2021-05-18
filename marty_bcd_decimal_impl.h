@@ -786,6 +786,7 @@ Decimal& Decimal::reciprocate( int precision )
 
 
 //----------------------------------------------------------------------------
+inline
 int Decimal::getMostSignificantDigitPower() const
 {
 

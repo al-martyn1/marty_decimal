@@ -391,12 +391,23 @@ public:
 
 
     //------------------------------
+    //! Return what part of d is *this (in percents/permilles) - d is 100%
     Decimal  getPercentOf ( const Decimal &d ) const;
     Decimal  getPermilleOf( const Decimal &d ) const;
 
     Decimal  getExPercentOf ( const Decimal &d, int precision, unsigned numSignificantDigits ) const;
     Decimal  getExPermilleOf( const Decimal &d, int precision, unsigned numSignificantDigits ) const;
 
+
+    //! Return what part of *this is d (in percents/permilles) - *this is 100%
+    Decimal  getPercent   ( const Decimal &d ) const { return d.getPercentOf (*this); }
+    Decimal  getPermille  ( const Decimal &d ) const { return d.getPermilleOf(*this); }
+
+    Decimal  getExPercent ( const Decimal &d, int precision, unsigned numSignificantDigits ) const { return d.getExPercentOf (*this, precision, numSignificantDigits); }
+    Decimal  getExPermille( const Decimal &d, int precision, unsigned numSignificantDigits ) const { return d.getExPermilleOf(*this, precision, numSignificantDigits); }
+
+
+    //------------------------------
     Decimal& round  ( int precision, RoundingMethod roundingMethod );
     Decimal  rounded( int precision, RoundingMethod roundingMethod ) const;
 
