@@ -409,6 +409,38 @@ Decimal& Decimal::div( const Decimal &d, int precision, unsigned numSignificantD
 }
 
 //----------------------------------------------------------------------------
+inline
+Decimal  Decimal::mod_helper_raw_div( const Decimal &d ) const //!< Возвращает частное (с одним макс знаком после запятой, по модулю, без учёта знака) - 
+{
+    if (d.m_sign==0)
+    {
+        throw std::runtime_error("marty::Decimal::mod_helper_raw: division by zero");
+    }
+
+
+    // 1 знак после точки (и одна значащая цифра в дроби) вполне достаточен, и время немного сэкономим - всё равно - отбрасывать
+    int      precision = 1;
+    unsigned numSignificantDigits = 1;
+
+
+    Decimal res;
+    res.m_sign = 1;
+    res.m_precision = bcd::rawDivision( res.m_number, m_number, m_precision, d.m_number, d.m_precision, precision, numSignificantDigits );
+
+    return res;
+}
+
+//----------------------------------------------------------------------------
+inline
+Decimal  Decimal::mod_helper( const Decimal &d ) const
+{
+    Decimal res = mod_helper_raw_div(d);
+    res.round( 0, RoundingMethod::roundTrunc );
+    res.mul(d);
+    return res;
+}
+
+//----------------------------------------------------------------------------
 //! Всегда возвращает true
 inline
 bool Decimal::precisionExpandTo( int p )

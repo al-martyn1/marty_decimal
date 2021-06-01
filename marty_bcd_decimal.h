@@ -237,6 +237,9 @@ public:
     Decimal& mul( const Decimal &d );
     Decimal& div( const Decimal &d, int precision = -1, unsigned numSignificantDigits = (unsigned)-1 );
 
+    Decimal  mod_helper_raw_div( const Decimal &d ) const; //!< Возвращает частное (с одним макс знаком после запятой, по модулю, без учёта знака)
+    Decimal  mod_helper( const Decimal &d ) const; //!< Возвращает целое (в виде Decimal), сколько раз 'd' влезает в текущее (по модулю) - для реализации получения частного и остатка от деления, кто как пожелает на свой вкус
+
     //----------------------------------------------------------------------------
 
     
