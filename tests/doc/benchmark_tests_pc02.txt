@@ -1,260 +1,260 @@
 Platform: x86
 BCD storage type: std::basic_string
 
-double               , normal precision,  normal numbers, '+'  elapsed time: 1779
-cpp_dec_float<50>    , normal precision,  normal numbers, '+'  elapsed time: 11840
-marty::Decimal(50)   , normal precision,  normal numbers, '+'  elapsed time: 27971
+double               , normal precision,  normal numbers, '+'  elapsed time: 1825
+cpp_dec_float<50>    , normal precision,  normal numbers, '+'  elapsed time: 12247
+marty::Decimal(50)   , normal precision,  normal numbers, '+'  elapsed time: 28750
   Performance log
-    double           : 6.36%, x 15.72
-    cpp_dec_float    : 42.33%, x 2.36
+    double           : 6.35%, x 15.75
+    cpp_dec_float    : 42.6%, x 2.35
     Decimal          : 100%, x 1
 
-double               , normal precision,  normal numbers, '-'  elapsed time: 1779
-cpp_dec_float<50>    , normal precision,  normal numbers, '-'  elapsed time: 12277
-marty::Decimal(50)   , normal precision,  normal numbers, '-'  elapsed time: 28876
+double               , normal precision,  normal numbers, '-'  elapsed time: 1826
+cpp_dec_float<50>    , normal precision,  normal numbers, '-'  elapsed time: 12573
+marty::Decimal(50)   , normal precision,  normal numbers, '-'  elapsed time: 30046
   Performance log
-    double           : 6.16%, x 16.23
-    cpp_dec_float    : 42.52%, x 2.35
+    double           : 6.08%, x 16.45
+    cpp_dec_float    : 41.85%, x 2.39
     Decimal          : 100%, x 1
 
-double               , normal precision,  normal numbers, '==' elapsed time: 1856
-cpp_dec_float<50>    , normal precision,  normal numbers, '==' elapsed time: 5195
-marty::Decimal(50)   , normal precision,  normal numbers, '==' elapsed time: 7784
+double               , normal precision,  normal numbers, '==' elapsed time: 1935
+cpp_dec_float<50>    , normal precision,  normal numbers, '==' elapsed time: 5491
+marty::Decimal(50)   , normal precision,  normal numbers, '==' elapsed time: 8081
   Performance log
-    double           : 23.84%, x 4.19
-    cpp_dec_float    : 66.74%, x 1.5
+    double           : 23.95%, x 4.18
+    cpp_dec_float    : 67.95%, x 1.47
     Decimal          : 100%, x 1
 
-double               , normal precision,  normal numbers, '*'  elapsed time: 1763
-cpp_dec_float<50>    , normal precision,  normal numbers, '*'  elapsed time: 36972
-marty::Decimal(50)   , normal precision,  normal numbers, '*'  elapsed time: 64866
+double               , normal precision,  normal numbers, '*'  elapsed time: 1825
+cpp_dec_float<50>    , normal precision,  normal numbers, '*'  elapsed time: 38813
+marty::Decimal(50)   , normal precision,  normal numbers, '*'  elapsed time: 68204
   Performance log
-    double           : 2.72%, x 36.76
-    cpp_dec_float    : 57%, x 1.75
+    double           : 2.68%, x 37.31
+    cpp_dec_float    : 56.91%, x 1.76
     Decimal          : 100%, x 1
 
-double               , normal precision,  normal numbers, '/'  elapsed time: 1778
-cpp_dec_float<50>    , normal precision,  normal numbers, '/'  elapsed time: 283563
-marty::Decimal(50)   , normal precision,  normal numbers, '/'  elapsed time: 3429698
+double               , normal precision,  normal numbers, '/'  elapsed time: 1840
+cpp_dec_float<50>    , normal precision,  normal numbers, '/'  elapsed time: 292783
+marty::Decimal(50)   , normal precision,  normal numbers, '/'  elapsed time: 3455968
   Performance log
     double           : 0.05%, x 2000
-    cpp_dec_float    : 8.27%, x 12.09
+    cpp_dec_float    : 8.47%, x 11.81
     Decimal          : 100%, x 1
 
 ------------------------------
-double               , normal precision,  accounting numbers, '+'  elapsed time: 1638
-cpp_dec_float<50>    , normal precision,  accounting numbers, '+'  elapsed time: 12948
-marty::Decimal(50)   , normal precision,  accounting numbers, '+'  elapsed time: 30966
+double               , normal precision,  accounting numbers, '+'  elapsed time: 1607
+cpp_dec_float<50>    , normal precision,  accounting numbers, '+'  elapsed time: 12730
+marty::Decimal(50)   , normal precision,  accounting numbers, '+'  elapsed time: 30420
   Performance log
-    double           : 5.29%, x 18.90
-    cpp_dec_float    : 41.81%, x 2.39
+    double           : 5.28%, x 18.94
+    cpp_dec_float    : 41.85%, x 2.39
     Decimal          : 100%, x 1
 
-double               , normal precision,  accounting numbers, '-'  elapsed time: 1638
-cpp_dec_float<50>    , normal precision,  accounting numbers, '-'  elapsed time: 13166
-marty::Decimal(50)   , normal precision,  accounting numbers, '-'  elapsed time: 32449
+double               , normal precision,  accounting numbers, '-'  elapsed time: 1622
+cpp_dec_float<50>    , normal precision,  accounting numbers, '-'  elapsed time: 12964
+marty::Decimal(50)   , normal precision,  accounting numbers, '-'  elapsed time: 31497
   Performance log
-    double           : 5.05%, x 19.80
-    cpp_dec_float    : 40.57%, x 2.46
+    double           : 5.15%, x 19.42
+    cpp_dec_float    : 41.16%, x 2.43
     Decimal          : 100%, x 1
 
-double               , normal precision,  accounting numbers, '==' elapsed time: 1747
-cpp_dec_float<50>    , normal precision,  accounting numbers, '==' elapsed time: 5663
-marty::Decimal(50)   , normal precision,  accounting numbers, '==' elapsed time: 8127
+double               , normal precision,  accounting numbers, '==' elapsed time: 1716
+cpp_dec_float<50>    , normal precision,  accounting numbers, '==' elapsed time: 5553
+marty::Decimal(50)   , normal precision,  accounting numbers, '==' elapsed time: 7800
   Performance log
-    double           : 21.5%, x 4.65
-    cpp_dec_float    : 69.68%, x 1.44
+    double           : 22%, x 4.55
+    cpp_dec_float    : 71.19%, x 1.40
     Decimal          : 100%, x 1
 
-double               , normal precision,  accounting numbers, '*'  elapsed time: 1638
-cpp_dec_float<50>    , normal precision,  accounting numbers, '*'  elapsed time: 40139
-marty::Decimal(50)   , normal precision,  accounting numbers, '*'  elapsed time: 116159
+double               , normal precision,  accounting numbers, '*'  elapsed time: 1607
+cpp_dec_float<50>    , normal precision,  accounting numbers, '*'  elapsed time: 39593
+marty::Decimal(50)   , normal precision,  accounting numbers, '*'  elapsed time: 112461
   Performance log
-    double           : 1.41%, x 70.92
-    cpp_dec_float    : 34.56%, x 2.89
+    double           : 1.43%, x 69.93
+    cpp_dec_float    : 35.21%, x 2.84
     Decimal          : 100%, x 1
 
-double               , normal precision,  accounting numbers, '/'  elapsed time: 1731
-cpp_dec_float<50>    , normal precision,  accounting numbers, '/'  elapsed time: 287651
-marty::Decimal(50)   , normal precision,  accounting numbers, '/'  elapsed time: 3531347
+double               , normal precision,  accounting numbers, '/'  elapsed time: 1701
+cpp_dec_float<50>    , normal precision,  accounting numbers, '/'  elapsed time: 282549
+marty::Decimal(50)   , normal precision,  accounting numbers, '/'  elapsed time: 3618817
   Performance log
     double           : 0.05%, x 2000
-    cpp_dec_float    : 8.15%, x 12.27
+    cpp_dec_float    : 7.81%, x 12.80
     Decimal          : 100%, x 1
 
 ------------------------------
-double               , long precision  ,  big numbers, '+'  elapsed time: 32
-cpp_dec_float<1000>  , long precision  ,  big numbers, '+'  elapsed time: 1887
-marty::Decimal(1000) , long precision  ,  big numbers, '+'  elapsed time: 8206
-  Performance log
-    double           : 0.39%, x 256.41
-    cpp_dec_float    : 23%, x 4.35
-    Decimal          : 100%, x 1
-
-double               , long precision  ,  big numbers, '-'  elapsed time: 31
-cpp_dec_float<1000>  , long precision  ,  big numbers, '-'  elapsed time: 1888
-marty::Decimal(1000) , long precision  ,  big numbers, '-'  elapsed time: 8642
+double               , long precision  ,  big numbers, '+'  elapsed time: 31
+cpp_dec_float<1000>  , long precision  ,  big numbers, '+'  elapsed time: 1935
+marty::Decimal(1000) , long precision  ,  big numbers, '+'  elapsed time: 8533
   Performance log
     double           : 0.36%, x 277.78
-    cpp_dec_float    : 21.85%, x 4.58
+    cpp_dec_float    : 22.68%, x 4.41
+    Decimal          : 100%, x 1
+
+double               , long precision  ,  big numbers, '-'  elapsed time: 47
+cpp_dec_float<1000>  , long precision  ,  big numbers, '-'  elapsed time: 1934
+marty::Decimal(1000) , long precision  ,  big numbers, '-'  elapsed time: 8908
+  Performance log
+    double           : 0.53%, x 188.68
+    cpp_dec_float    : 21.71%, x 4.61
     Decimal          : 100%, x 1
 
 double               , long precision  ,  big numbers, '==' elapsed time: 47
-cpp_dec_float<1000>  , long precision  ,  big numbers, '==' elapsed time: 374
-marty::Decimal(1000) , long precision  ,  big numbers, '==' elapsed time: 1389
+cpp_dec_float<1000>  , long precision  ,  big numbers, '==' elapsed time: 405
+marty::Decimal(1000) , long precision  ,  big numbers, '==' elapsed time: 1498
   Performance log
-    double           : 3.38%, x 29.59
-    cpp_dec_float    : 26.93%, x 3.71
+    double           : 3.14%, x 31.85
+    cpp_dec_float    : 27.04%, x 3.7
     Decimal          : 100%, x 1
 
 double               , long precision  ,  big numbers, '*'  elapsed time: 0
-cpp_dec_float<1000>  , long precision  ,  big numbers, '*'  elapsed time: 905
-marty::Decimal(1000) , long precision  ,  big numbers, '*'  elapsed time: 15210
+cpp_dec_float<1000>  , long precision  ,  big numbers, '*'  elapsed time: 998
+marty::Decimal(1000) , long precision  ,  big numbers, '*'  elapsed time: 15632
   Performance log
-    double           : 0.00657%, x 15220.70
-    cpp_dec_float    : 5.95%, x 16.81
+    double           : 0.0064%, x 15625
+    cpp_dec_float    : 6.38%, x 15.67
     Decimal          : 100%, x 1
 
 double               , long precision  ,  big numbers, '/'  elapsed time: 0
-cpp_dec_float<1000>  , long precision  ,  big numbers, '/'  elapsed time: 4758
-marty::Decimal(1000) , long precision  ,  big numbers, '/'  elapsed time: 606672
+cpp_dec_float<1000>  , long precision  ,  big numbers, '/'  elapsed time: 4898
+marty::Decimal(1000) , long precision  ,  big numbers, '/'  elapsed time: 625455
   Performance log
-    double           : 0.000165%, x 606060.61
+    double           : 0.00016%, x 625000
     cpp_dec_float    : 0.78%, x 128.21
     Decimal          : 100%, x 1
 
 ----------
 
-Total time elapsed: 8655.045 seconds
+Total time elapsed: 8795.165 seconds
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 Platform: x64
 BCD storage type: std::basic_string
 
-double               , normal precision,  normal numbers, '+'  elapsed time: 2949
-cpp_dec_float<50>    , normal precision,  normal numbers, '+'  elapsed time: 10296
-marty::Decimal(50)   , normal precision,  normal numbers, '+'  elapsed time: 23072
+double               , normal precision,  normal numbers, '+'  elapsed time: 3042
+cpp_dec_float<50>    , normal precision,  normal numbers, '+'  elapsed time: 10577
+marty::Decimal(50)   , normal precision,  normal numbers, '+'  elapsed time: 23681
   Performance log
-    double           : 12.78%, x 7.82
-    cpp_dec_float    : 44.63%, x 2.24
+    double           : 12.85%, x 7.78
+    cpp_dec_float    : 44.66%, x 2.24
     Decimal          : 100%, x 1
 
-double               , normal precision,  normal numbers, '-'  elapsed time: 2949
-cpp_dec_float<50>    , normal precision,  normal numbers, '-'  elapsed time: 10530
-marty::Decimal(50)   , normal precision,  normal numbers, '-'  elapsed time: 24695
+double               , normal precision,  normal numbers, '-'  elapsed time: 3042
+cpp_dec_float<50>    , normal precision,  normal numbers, '-'  elapsed time: 10795
+marty::Decimal(50)   , normal precision,  normal numbers, '-'  elapsed time: 25226
   Performance log
-    double           : 11.94%, x 8.38
-    cpp_dec_float    : 42.64%, x 2.35
+    double           : 12.06%, x 8.29
+    cpp_dec_float    : 42.79%, x 2.34
     Decimal          : 100%, x 1
 
-double               , normal precision,  normal numbers, '==' elapsed time: 2979
-cpp_dec_float<50>    , normal precision,  normal numbers, '==' elapsed time: 5710
-marty::Decimal(50)   , normal precision,  normal numbers, '==' elapsed time: 8720
+double               , normal precision,  normal numbers, '==' elapsed time: 3073
+cpp_dec_float<50>    , normal precision,  normal numbers, '==' elapsed time: 5819
+marty::Decimal(50)   , normal precision,  normal numbers, '==' elapsed time: 8939
   Performance log
-    double           : 34.16%, x 2.93
-    cpp_dec_float    : 65.48%, x 1.53
+    double           : 34.38%, x 2.91
+    cpp_dec_float    : 65.1%, x 1.54
     Decimal          : 100%, x 1
 
-double               , normal precision,  normal numbers, '*'  elapsed time: 2949
-cpp_dec_float<50>    , normal precision,  normal numbers, '*'  elapsed time: 13151
-marty::Decimal(50)   , normal precision,  normal numbers, '*'  elapsed time: 48032
+double               , normal precision,  normal numbers, '*'  elapsed time: 3042
+cpp_dec_float<50>    , normal precision,  normal numbers, '*'  elapsed time: 13416
+marty::Decimal(50)   , normal precision,  normal numbers, '*'  elapsed time: 49592
   Performance log
-    double           : 6.14%, x 16.29
-    cpp_dec_float    : 27.38%, x 3.65
+    double           : 6.13%, x 16.31
+    cpp_dec_float    : 27.05%, x 3.7
     Decimal          : 100%, x 1
 
-double               , normal precision,  normal numbers, '/'  elapsed time: 2980
-cpp_dec_float<50>    , normal precision,  normal numbers, '/'  elapsed time: 96674
-marty::Decimal(50)   , normal precision,  normal numbers, '/'  elapsed time: 2730267
+double               , normal precision,  normal numbers, '/'  elapsed time: 3089
+cpp_dec_float<50>    , normal precision,  normal numbers, '/'  elapsed time: 99373
+marty::Decimal(50)   , normal precision,  normal numbers, '/'  elapsed time: 2794056
   Performance log
     double           : 0.11%, x 909.09
-    cpp_dec_float    : 3.54%, x 28.25
+    cpp_dec_float    : 3.56%, x 28.09
     Decimal          : 100%, x 1
 
 ------------------------------
-double               , normal precision,  accounting numbers, '+'  elapsed time: 2980
-cpp_dec_float<50>    , normal precision,  accounting numbers, '+'  elapsed time: 11341
-marty::Decimal(50)   , normal precision,  accounting numbers, '+'  elapsed time: 25319
+double               , normal precision,  accounting numbers, '+'  elapsed time: 3026
+cpp_dec_float<50>    , normal precision,  accounting numbers, '+'  elapsed time: 11575
+marty::Decimal(50)   , normal precision,  accounting numbers, '+'  elapsed time: 25897
   Performance log
-    double           : 11.77%, x 8.5
-    cpp_dec_float    : 44.79%, x 2.23
+    double           : 11.68%, x 8.56
+    cpp_dec_float    : 44.7%, x 2.24
     Decimal          : 100%, x 1
 
-double               , normal precision,  accounting numbers, '-'  elapsed time: 2964
-cpp_dec_float<50>    , normal precision,  accounting numbers, '-'  elapsed time: 11606
-marty::Decimal(50)   , normal precision,  accounting numbers, '-'  elapsed time: 27020
+double               , normal precision,  accounting numbers, '-'  elapsed time: 3026
+cpp_dec_float<50>    , normal precision,  accounting numbers, '-'  elapsed time: 11825
+marty::Decimal(50)   , normal precision,  accounting numbers, '-'  elapsed time: 27581
   Performance log
     double           : 10.97%, x 9.12
-    cpp_dec_float    : 42.95%, x 2.33
+    cpp_dec_float    : 42.87%, x 2.33
     Decimal          : 100%, x 1
 
-double               , normal precision,  accounting numbers, '==' elapsed time: 2979
-cpp_dec_float<50>    , normal precision,  accounting numbers, '==' elapsed time: 6084
-marty::Decimal(50)   , normal precision,  accounting numbers, '==' elapsed time: 8783
+double               , normal precision,  accounting numbers, '==' elapsed time: 3136
+cpp_dec_float<50>    , normal precision,  accounting numbers, '==' elapsed time: 6208
+marty::Decimal(50)   , normal precision,  accounting numbers, '==' elapsed time: 8970
   Performance log
-    double           : 33.92%, x 2.95
-    cpp_dec_float    : 69.27%, x 1.44
+    double           : 34.96%, x 2.86
+    cpp_dec_float    : 69.21%, x 1.44
     Decimal          : 100%, x 1
 
-double               , normal precision,  accounting numbers, '*'  elapsed time: 2964
-cpp_dec_float<50>    , normal precision,  accounting numbers, '*'  elapsed time: 14212
-marty::Decimal(50)   , normal precision,  accounting numbers, '*'  elapsed time: 79763
+double               , normal precision,  accounting numbers, '*'  elapsed time: 3058
+cpp_dec_float<50>    , normal precision,  accounting numbers, '*'  elapsed time: 14680
+marty::Decimal(50)   , normal precision,  accounting numbers, '*'  elapsed time: 82602
   Performance log
-    double           : 3.72%, x 26.88
-    cpp_dec_float    : 17.82%, x 5.61
+    double           : 3.70%, x 27.03
+    cpp_dec_float    : 17.77%, x 5.63
     Decimal          : 100%, x 1
 
-double               , normal precision,  accounting numbers, '/'  elapsed time: 3011
-cpp_dec_float<50>    , normal precision,  accounting numbers, '/'  elapsed time: 98281
-marty::Decimal(50)   , normal precision,  accounting numbers, '/'  elapsed time: 2821543
+double               , normal precision,  accounting numbers, '/'  elapsed time: 3073
+cpp_dec_float<50>    , normal precision,  accounting numbers, '/'  elapsed time: 101760
+marty::Decimal(50)   , normal precision,  accounting numbers, '/'  elapsed time: 2889700
   Performance log
     double           : 0.11%, x 909.09
-    cpp_dec_float    : 3.48%, x 28.74
+    cpp_dec_float    : 3.52%, x 28.41
     Decimal          : 100%, x 1
 
 ------------------------------
 double               , long precision  ,  big numbers, '+'  elapsed time: 78
-cpp_dec_float<1000>  , long precision  ,  big numbers, '+'  elapsed time: 1466
-marty::Decimal(1000) , long precision  ,  big numbers, '+'  elapsed time: 5398
+cpp_dec_float<1000>  , long precision  ,  big numbers, '+'  elapsed time: 1513
+marty::Decimal(1000) , long precision  ,  big numbers, '+'  elapsed time: 5554
   Performance log
-    double           : 1.44%, x 69.44
-    cpp_dec_float    : 27.16%, x 3.68
+    double           : 1.40%, x 71.43
+    cpp_dec_float    : 27.24%, x 3.67
     Decimal          : 100%, x 1
 
 double               , long precision  ,  big numbers, '-'  elapsed time: 62
-cpp_dec_float<1000>  , long precision  ,  big numbers, '-'  elapsed time: 1482
-marty::Decimal(1000) , long precision  ,  big numbers, '-'  elapsed time: 5679
+cpp_dec_float<1000>  , long precision  ,  big numbers, '-'  elapsed time: 1514
+marty::Decimal(1000) , long precision  ,  big numbers, '-'  elapsed time: 5850
   Performance log
-    double           : 1.09%, x 91.74
-    cpp_dec_float    : 26.1%, x 3.83
+    double           : 1.06%, x 94.34
+    cpp_dec_float    : 25.88%, x 3.86
     Decimal          : 100%, x 1
 
-double               , long precision  ,  big numbers, '==' elapsed time: 62
-cpp_dec_float<1000>  , long precision  ,  big numbers, '==' elapsed time: 297
-marty::Decimal(1000) , long precision  ,  big numbers, '==' elapsed time: 1076
+double               , long precision  ,  big numbers, '==' elapsed time: 78
+cpp_dec_float<1000>  , long precision  ,  big numbers, '==' elapsed time: 296
+marty::Decimal(1000) , long precision  ,  big numbers, '==' elapsed time: 1139
   Performance log
-    double           : 5.76%, x 17.36
-    cpp_dec_float    : 27.60%, x 3.62
+    double           : 6.85%, x 14.6
+    cpp_dec_float    : 25.99%, x 3.85
     Decimal          : 100%, x 1
 
 double               , long precision  ,  big numbers, '*'  elapsed time: 0
-cpp_dec_float<1000>  , long precision  ,  big numbers, '*'  elapsed time: 484
-marty::Decimal(1000) , long precision  ,  big numbers, '*'  elapsed time: 8018
+cpp_dec_float<1000>  , long precision  ,  big numbers, '*'  elapsed time: 483
+marty::Decimal(1000) , long precision  ,  big numbers, '*'  elapsed time: 8112
   Performance log
     double           : 0.01%, x 10000
-    cpp_dec_float    : 6.04%, x 16.56
+    cpp_dec_float    : 5.95%, x 16.81
     Decimal          : 100%, x 1
 
 double               , long precision  ,  big numbers, '/'  elapsed time: 0
-cpp_dec_float<1000>  , long precision  ,  big numbers, '/'  elapsed time: 2418
-marty::Decimal(1000) , long precision  ,  big numbers, '/'  elapsed time: 396960
+cpp_dec_float<1000>  , long precision  ,  big numbers, '/'  elapsed time: 2496
+marty::Decimal(1000) , long precision  ,  big numbers, '/'  elapsed time: 406726
   Performance log
-    double           : 0.000252%, x 396825.4
+    double           : 0.000246%, x 406504.07
     cpp_dec_float    : 0.61%, x 163.93
     Decimal          : 100%, x 1
 
 ----------
 
-Total time elapsed: 6528.283 seconds
+Total time elapsed: 6686.78 seconds
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -133,11 +133,11 @@ public:
 
 
     //------------------------------
-    const char* toString( char *pBuf, std::size_t bufSize, int precision = -1 ) const;
-    std::string toString( int precision = -1 ) const;
+    const char* toString( char *pBuf, std::size_t bufSize, int precision = -1, char dot = '.' ) const;
+    std::string toString( int precision = -1, char dot = '.' ) const;
 
-    const char* to_string( char *pBuf, std::size_t bufSize, int precision = -1 ) const { return toString(pBuf, bufSize, precision); }
-    std::string to_string( int precision = -1 )                                  const { return toString(precision); }
+    const char* to_string( char *pBuf, std::size_t bufSize, int precision = -1, char dot = '.' ) const { return toString(pBuf, bufSize, precision, dot); }
+    std::string to_string( int precision = -1, char dot = '.' )                                  const { return toString(precision, dot); }
 
 #if 0
 
