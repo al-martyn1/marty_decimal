@@ -189,10 +189,10 @@ const char* Decimal::toString( char *pBuf, std::size_t bufSize, int precision, c
 
 //----------------------------------------------------------------------------
 inline
-std::string Decimal::toString( int precision ) const
+std::string Decimal::toString( int precision, char dot ) const
 {
-    char buf[256]; // 256 знаком в числе хватит для всех :)
-    return toString( &buf[0], sizeof(buf), precision );
+    char buf[4096]; // 256 знаков в числе хватит для всех :)
+    return toString( &buf[0], sizeof(buf), precision, dot );
 }
 
 //----------------------------------------------------------------------------
