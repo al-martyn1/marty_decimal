@@ -432,11 +432,10 @@ Decimal  Decimal::mod_helper_raw_div( const Decimal &d ) const //!< Возвра
 
 //----------------------------------------------------------------------------
 inline
-Decimal  Decimal::mod_helper( const Decimal &d ) const
+Decimal  Decimal::mod_helper( const Decimal &d ) const //!< Возвращает целое (в виде Decimal), сколько раз 'd' влезает в текущее (по модулю) - для реализации получения частного и остатка от деления, кто как пожелает на свой вкус
 {
     Decimal res = mod_helper_raw_div(d);
     res.round( 0, RoundingMethod::roundTrunc );
-    res.mul(d);
     return res;
 }
 
