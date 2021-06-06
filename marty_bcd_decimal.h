@@ -133,11 +133,11 @@ public:
 
 
     //------------------------------
-    const char* toString( char *pBuf, std::size_t bufSize, int precision = -1, char dot = '.' ) const;
-    std::string toString( int precision = -1, char dot = '.' ) const;
+    const char* toString( char *pBuf, std::size_t bufSize, int precision = -1, char dot = 0 ) const;
+    std::string toString( int precision = -1, char dot = 0 ) const;
 
-    const char* to_string( char *pBuf, std::size_t bufSize, int precision = -1, char dot = '.' ) const { return toString(pBuf, bufSize, precision, dot); }
-    std::string to_string( int precision = -1, char dot = '.' )                                  const { return toString(precision, dot); }
+    const char* to_string( char *pBuf, std::size_t bufSize, int precision = -1, char dot = 0 ) const { return toString(pBuf, bufSize, precision, dot); }
+    std::string to_string( int precision = -1, char dot = 0 )                                  const { return toString(precision, dot); }
 
 #if 0
 
@@ -414,6 +414,11 @@ public:
     Decimal& round  ( int precision, RoundingMethod roundingMethod );
     Decimal  rounded( int precision, RoundingMethod roundingMethod ) const;
 
+    //------------------------------
+    static char setDefaultDecimalSeparator( char sep ) { char res = decimalSeparator; decimalSeparator = sep; return res; }
+    static char getDefaultDecimalSeparator( )          { return decimalSeparator; }
+
+
 
 //----------------------------------------------------------------------------
 protected:
@@ -443,6 +448,10 @@ protected:
 
     inline static int       m_divisionPrecision          = MARTY_DECIMAL_DEFAULT_DIVISION_PRECISION;
     inline static unsigned  m_divisionNumberOfSignificantDigits = 3;
+
+    //------------------------------
+    inline static char decimalSeparator = '.';
+
 
 
 }; // class Decimal

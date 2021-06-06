@@ -182,6 +182,9 @@ const char* Decimal::toString( char *pBuf, std::size_t bufSize, int precision, c
         pBuf[idx++] = '-';
     }
 
+    if (dot==0)
+        dot = decimalSeparator;
+
     bcd::formatRawBcdNumber( m_number, m_precision, &pBuf[idx], bufSize-1, dot );
 
     return pBuf;
@@ -191,7 +194,7 @@ const char* Decimal::toString( char *pBuf, std::size_t bufSize, int precision, c
 inline
 std::string Decimal::toString( int precision, char dot ) const
 {
-    char buf[4096]; // 256 знаков в числе хватит для всех :)
+    char buf[4096]; // 4096 знаков в числе хватит для всех :)
     return toString( &buf[0], sizeof(buf), precision, dot );
 }
 
