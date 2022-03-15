@@ -1,5 +1,13 @@
 #pragma once
 
+#ifndef MARTY_DECIMAL_ASSERT_FAIL
+
+    #define MARTY_DECIMAL_ASSERT_FAIL(msg)    throw std::runtime_error(msg)
+
+#endif
+
+
+
 #ifdef USE_MARTY_INT_DECIMAL
     #include "marty_int_decimal.h"
 #else

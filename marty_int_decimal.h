@@ -63,7 +63,7 @@ public:
     static denum_t denum( precision_t pr )
     {
         if ( maxPrecision<denum_t>() < pr )
-            throw std::runtime_error("DecimalPrecision::denum - taken precision to big");
+            MARTY_DECIMAL_ASSERT_FAIL("DecimalPrecision::denum - taken precision to big");
 
         return (denum_t)(getPowers10Table()[pr]);
 
@@ -73,7 +73,7 @@ public:
         {
             denum_t next = denum * 10u;
             if (next<denum)
-                throw std::runtime_error("DecimalPrecision precision to big");
+                MARTY_DECIMAL_ASSERT_FAIL("DecimalPrecision precision to big");
             denum = next;
         }
 
@@ -93,7 +93,7 @@ public:
 protected:
 
     template<typename IntType>
-    static precision_t maxPrecision()    { throw std::runtime_error("DecimalPrecision::maxPrecision not implemented"); }
+    static precision_t maxPrecision()    { MARTY_DECIMAL_ASSERT_FAIL("DecimalPrecision::maxPrecision not implemented"); }
 
     template<> static precision_t maxPrecision<std::int32_t >() { return  9; }
     template<> static precision_t maxPrecision<std::uint32_t>() { return  9; }
@@ -722,7 +722,7 @@ protected:
         if (thisSign<0)
         {
             // Для embed asert поставить
-            throw std::runtime_error("Decimal::roundingImpl2: negative decimals not allowed here");
+            MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl2: negative decimals not allowed here");
         }
 
         bool   fitExact   = precisionFitTo(requestedPrecision + 1);
@@ -813,7 +813,7 @@ protected:
 
         }
 
-        throw std::runtime_error("Decimal::roundingImpl2: something goes wrong");
+        MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl2: something goes wrong");
 
 
     }
@@ -824,7 +824,7 @@ protected:
     {
         if (roundingMethod==RoundingMethod::roundingInvalid)
         {
-            throw std::runtime_error("Decimal::roundingImpl: rounding method isInvalid");
+            MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl: rounding method isInvalid");
         }
 
         if ( m_denum.precision() <= requestedPrecision )
@@ -888,7 +888,7 @@ protected:
 
         }
 
-        throw std::runtime_error("Decimal::roundingImpl: rounding method not implemented yet");
+        MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl: rounding method not implemented yet");
 
         return *this;
 
@@ -1039,7 +1039,7 @@ protected:
         
             case RoundingMethod::roundHalfToOdd:
                  {
-                     //throw std::runtime_error("RoundingMethod::roundHalfToOdd not implemented");
+                     //MARTY_DECIMAL_ASSERT_FAIL("RoundingMethod::roundHalfToOdd not implemented");
 
                      // Soryan, not implemented yet
                      precisionFitTo(requestedPrecision);
@@ -1303,7 +1303,7 @@ Decimal     decimalFromString( const std::string &numberStr_ )
         double dbl = std::stod( numberStr, &cnt );
 
         if (cnt!=sz)
-            throw std::runtime_error("Decimal fromString - possible exponential form parsing failed");
+            MARTY_DECIMAL_ASSERT_FAIL("Decimal fromString - possible exponential form parsing failed");
 
         return Decimal(dbl);
     }
@@ -1312,12 +1312,14 @@ Decimal     decimalFromString( const std::string &numberStr_ )
     bool neg = false;
 
     while( charIsSpaceOrTab(numberStr[pos]) && pos!=sz ) pos++;
-    if (pos==sz) throw std::runtime_error("Decimal fromString - empty string taken as number string");
+    if (pos==sz) 
+        MARTY_DECIMAL_ASSERT_FAIL("Decimal fromString - empty string taken as number string");
 
     if (numberStr[pos]=='+')                        { pos++; }
     else if (numberStr[pos]=='-')                   { pos++; neg = true; }
     else if (charToDecimalDigit(numberStr[pos])>=0) {}
-    else throw std::runtime_error("Decimal fromString - invalid character found");
+    else
+        MARTY_DECIMAL_ASSERT_FAIL("Decimal fromString - invalid character found");
 
     while( charIsSpaceOrTab(numberStr[pos]) ) pos++;
 

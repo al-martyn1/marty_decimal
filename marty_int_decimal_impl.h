@@ -88,7 +88,7 @@ void DecimalDenumerator::tryIncDenum()
 {
     denum_t newDenum = m_denum*10u;
     if (newDenum<m_denum)
-        throw std::runtime_error("DecimalDenumerator precision to big to increment");
+        MARTY_DECIMAL_ASSERT_FAIL("DecimalDenumerator precision to big to increment");
     m_denum = newDenum;
 }
 
@@ -97,7 +97,7 @@ inline
 void DecimalDenumerator::tryDecDenum()
 {
     if (!m_denum)
-        throw std::runtime_error("DecimalDenumerator precision to small to decrement");
+        MARTY_DECIMAL_ASSERT_FAIL("DecimalDenumerator precision to small to decrement");
     m_denum = m_denum / 10u;
 }
 

@@ -694,7 +694,7 @@ inline
 const char* formatRawBcdNumber( const raw_bcd_number_t &bcdNumber, int precision, char *pBuf, std::size_t bufSize, char sep = '.' )
 {
     if (bufSize < 4 )
-        throw std::runtime_error("marty::bcd::formatRawBcdNumber: bufSize is not enough");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::bcd::formatRawBcdNumber: bufSize is not enough");
 
     // bufSize must be enough for 0.0\0
 
@@ -907,7 +907,7 @@ inline decimal_digit_t bcdCorrectOverflowAfterSummation( decimal_digit_t &d )
              return 2;
 
         default: 
-             throw std::runtime_error("marty::bcd::bcdCorrectOverflowAfterSummation: something goes wrong");
+             MARTY_DECIMAL_ASSERT_FAIL("marty::bcd::bcdCorrectOverflowAfterSummation: something goes wrong");
 
     }
     */
@@ -929,7 +929,7 @@ inline decimal_digit_t bcdCorrectOverflowAfterSummation( decimal_digit_t &d )
     }
     else
     {
-        throw std::runtime_error("marty::bcd::bcdCorrectOverflowAfterSummation: something goes wrong");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::bcd::bcdCorrectOverflowAfterSummation: something goes wrong");
     }
     */
 
@@ -1256,7 +1256,7 @@ bool rawDivisionCheckContinueCondition( int dividendPrecision, int divisorPrecis
     // {
     //     // absolute precision required
     //     // Hm-m-m
-    //     throw std::runtime_error("rawDivisionCheckContinueCondition: absolute precision not implemented");
+    //     MARTY_DECIMAL_ASSERT_FAIL("rawDivisionCheckContinueCondition: absolute precision not implemented");
     // }
 
     return false;

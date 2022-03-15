@@ -22,6 +22,13 @@
 #include "marty_relops_impl.h"
 
 
+#if defined(QSTRING_H)
+
+    #define MARTY_DECIMAL_QT_USED
+
+#endif
+
+
 //----------------------------------------------------------------------------
 namespace marty
 {
@@ -96,8 +103,18 @@ public:
     void assignFromString( const char        *pStr );
     void assignFromString( const std::string &str  );
 
+    bool assignFromStringNoThrow( const char        *pStr );
+    bool assignFromStringNoThrow( const std::string &str  );
+
     static Decimal fromString( const char        *pStr ) { Decimal res; res.assignFromString(pStr); return res; }
     static Decimal fromString( const std::string &str  ) { Decimal res; res.assignFromString(str ); return res; }
+
+
+    #if defined(MARTY_DECIMAL_QT_USED)
+
+        static Decimal fromString( const QString &str  ) {  return fromString(str.toStdString()); }
+    
+    #endif
 
 
 //----------------------------------------------------------------------------
@@ -139,6 +156,14 @@ public:
     const char* to_string( char *pBuf, std::size_t bufSize, int precision = -1, char dot = 0 ) const { return toString(pBuf, bufSize, precision, dot); }
     std::string to_string( int precision = -1, char dot = 0 )                                  const { return toString(precision, dot); }
 
+
+    #if defined(MARTY_DECIMAL_QT_USED)
+
+        QString toQString( int precision = -1, char dot = 0 ) const { return QString::fromStdString(toString(precision, dot)); }
+    
+    #endif
+
+
 #if 0
 
     int           toInt() const                           { return (int)(m_num/m_denum.denum()); }
@@ -158,7 +183,7 @@ protected:
     template<typename IntType>
     IntType toIntImpl() const
     {
-        throw std::runtime_error("marty::Decimal::toInt: not implemented for this type");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::toInt: not implemented for this type");
     }
 
     std::uint64_t getAsUint64() const
@@ -209,6 +234,12 @@ public:
 
     Decimal( const char        *pStr ) { assignFromString( pStr ); }
     Decimal( const std::string &str  ) { assignFromString( str  ); }
+
+    #if defined(MARTY_DECIMAL_QT_USED)
+
+        Decimal( const QString     &str  ) { assignFromString( str.toStdString() ); }
+
+    #endif
 
     //------------------------------
 
@@ -394,7 +425,7 @@ public:
 
 
     //------------------------------
-    //! Return what part of d is *this (in percents/permilles) - d is 100%
+    //! Return which part of d is *this (in percents/permilles) - d is 100%
     Decimal  getPercentOf ( const Decimal &d ) const;
     Decimal  getPermilleOf( const Decimal &d ) const;
 
@@ -402,7 +433,7 @@ public:
     Decimal  getExPermilleOf( const Decimal &d, int precision, unsigned numSignificantDigits ) const;
 
 
-    //! Return what part of *this is d (in percents/permilles) - *this is 100%
+    //! Return which part of *this is d (in percents/permilles) - *this is 100%
     Decimal  getPercent   ( const Decimal &d ) const { return d.getPercentOf (*this); }
     Decimal  getPermille  ( const Decimal &d ) const { return d.getPermilleOf(*this); }
 
@@ -483,9 +514,7 @@ std::ostream& operator<<( std::ostream& os, const Decimal &v )
     }
     else if (precision>0)
     {
-        // Exact global output precision will be used
-        // if (precision > Decimal::maxPrecision())
-        //     precision = Decimal::maxPrecision();
+        // Exact taken precision will be used
     }
     else // precision==0
     {

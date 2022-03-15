@@ -43,8 +43,11 @@ const char* Decimal::getRoundingMethodName( RoundingMethod m )
 
 //----------------------------------------------------------------------------
 inline
-void Decimal::assignFromString( const char        *pStr )
+bool Decimal::assignFromStringNoThrow( const char        *pStr )
 {
+    if (!pStr)
+        return false;
+
     const char *pStrOrg = pStr;
 
     // Skip ws
@@ -75,7 +78,7 @@ void Decimal::assignFromString( const char        *pStr )
 
     if (*pStrEnd!=0 && *pStrEnd!='0')
     {
-        throw std::runtime_error( std::string("Decimal::fromString: invalid number string: ") + pStrOrg );
+        return false;
     }
 
     if (bcd::checkForZero( m_number ))
@@ -85,6 +88,23 @@ void Decimal::assignFromString( const char        *pStr )
         m_sign = 0;
     }
 
+    return true;
+
+}
+
+//----------------------------------------------------------------------------
+inline
+bool Decimal::assignFromStringNoThrow( const std::string &str  )
+{
+    return assignFromStringNoThrow( str.c_str() );
+}
+
+//----------------------------------------------------------------------------
+inline
+void Decimal::assignFromString( const char        *pStr )
+{
+    if (!assignFromStringNoThrow( pStr ))
+        MARTY_DECIMAL_ASSERT_FAIL( std::string("Decimal::fromString: invalid number string: ") + std::string(pStr) );
 }
 
 //----------------------------------------------------------------------------
@@ -167,7 +187,7 @@ inline
 const char* Decimal::toString( char *pBuf, std::size_t bufSize, int precision, char dot ) const
 {
     if (bufSize < 5 )
-        throw std::runtime_error("marty::Decimal::toString: bufSize is not enough");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::toString: bufSize is not enough");
 
     if (m_sign==0)
     {
@@ -361,12 +381,12 @@ Decimal& Decimal::div( const Decimal &d, int precision, unsigned numSignificantD
     //m_divisionNumberOfSignificantDigits
     if (d.m_sign==0)
     {
-        throw std::runtime_error("marty::Decimal::div: division by zero");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::div: division by zero");
     }
 
     if (bcd::checkForZero( d.m_number ))
     {
-        throw std::runtime_error("marty::Decimal::div: division by zero. Divisor m_sign is not a zero, but Divisor m_number is actually zero");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::div: division by zero. Divisor m_sign is not a zero, but Divisor m_number is actually zero");
     }
 
     // Для деления знак получается по тем же правилам, что и для умножения
@@ -417,7 +437,7 @@ Decimal  Decimal::mod_helper_raw_div( const Decimal &d ) const //!< Возвра
 {
     if (d.m_sign==0)
     {
-        throw std::runtime_error("marty::Decimal::mod_helper_raw: division by zero");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::mod_helper_raw: division by zero");
     }
 
 
@@ -565,6 +585,9 @@ Decimal Decimal::makeMinimalPrecisionFive() const
 inline
 Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod roundingMethod )
 {
+    if (requestedPrecision<0)
+        return *this;
+
     int thisSign = sgn();
     if (!thisSign)
     {
@@ -575,7 +598,7 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
     if (thisSign<0)
     {
         // Для embed asert поставить
-        throw std::runtime_error("Decimal::roundingImpl2: negative decimals not allowed here");
+        MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl2: negative decimals not allowed here");
     }
 
     bool   fitExact   = precisionFitTo(requestedPrecision + 1);
@@ -682,9 +705,9 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
 
     }
 
-    throw std::runtime_error("Decimal::roundingImpl2: something goes wrong");
+    MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl2: something goes wrong");
 
-
+	return *this;
 }
 
 //----------------------------------------------------------------------------
@@ -693,7 +716,7 @@ Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod rounding
 {
     if (roundingMethod==RoundingMethod::roundingInvalid)
     {
-        throw std::runtime_error("Decimal::roundingImpl: rounding method isInvalid");
+        MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl: rounding method isInvalid");
     }
 
     if ( precision() <= requestedPrecision )
@@ -755,7 +778,7 @@ Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod rounding
 
     }
 
-    throw std::runtime_error("Decimal::roundingImpl: rounding method not implemented yet");
+    MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl: rounding method not implemented yet");
 
     return *this;
 
@@ -799,7 +822,7 @@ inline
 Decimal  Decimal::reciprocated( int precision ) const
 {
     if (isZero())
-        throw std::runtime_error("marty::Decimal::reciprocated: Zero value can't be reciprocated");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::reciprocated: Zero value can't be reciprocated");
     Decimal d1 = 1u;
     return  d1.div( *this, precision );
 
@@ -826,12 +849,12 @@ int Decimal::getMostSignificantDigitPower() const
 
     if (m_sign==0)
     {
-        throw std::runtime_error("marty::Decimal::msp (getMostSignificantDigitPower): not valid for zero numbers");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::msp (getMostSignificantDigitPower): not valid for zero numbers");
     }
 
     if (bcd::checkForZero( m_number ))
     {
-        throw std::runtime_error("marty::Decimal::msp (getMostSignificantDigitPower): not valid for zero numbers. Divisor m_sign is not a zero, but Divisor m_number is actually zero");
+        MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::msp (getMostSignificantDigitPower): not valid for zero numbers. Divisor m_sign is not a zero, but Divisor m_number is actually zero");
     }
 
     return bcd::getDecimalOrderByIndex( bcd::getMsdIndex(m_number), m_number, m_precision ); 
@@ -877,6 +900,9 @@ Decimal Decimal::implGetExPercentOf ( const Decimal &scale, const Decimal &d, in
 
     if (numSignificantDigits<1)
         numSignificantDigits = 1;
+
+
+    // res = *this * scale / d, scale is 100/1000 (precent/permille)
 
     Decimal tmp = *this;
     tmp.mul(scale);
