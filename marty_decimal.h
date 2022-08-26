@@ -72,7 +72,7 @@ bool mullersRecurrenceFunctionTest( std::vector< SomeFloatingType > &testResults
     testResults[0] = SomeFloatingType(4   ); // x0
     testResults[1] = SomeFloatingType(4.25); // x1
 
-    std::vector< SomeFloatingType >::size_type i = 2, size = testResults.size();
+    typename std::vector< SomeFloatingType >::size_type i = 2, size = testResults.size();
     for(; i!=size; ++i)
     {
         testResults[i] = mullersRecurrenceFunction( testResults[i-1], testResults[i-2] );
