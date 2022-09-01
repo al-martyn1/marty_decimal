@@ -8,15 +8,20 @@
 //----------------------------------------------------------------------------
 #include <cstdint>
 #include <climits>
+#include <cstring>
 #include <limits>
 #include <exception>
 #include <stdexcept>
+#include <string>
 #include <vector>
-#include <cstring>
 #include <algorithm>
 #include <iterator>
-#include <string>
 #include <algorithm>
+
+#if !defined(MARTY_DECIMAL_DISABLE_MODERN_CPP_SUPPORT)
+    #include <functional>
+#endif
+
 
 //----------------------------------------------------------------------------
 
@@ -55,6 +60,7 @@
     #define MARTY_RAW_BCD_FORCE_INLINE( funcFullSignature ) funcFullSignature
 
 #endif
+
 
 
 
@@ -105,6 +111,8 @@ namespace bcd
     typedef std::vector<decimal_digit_t> raw_bcd_number_t;
 
 #endif
+
+
 
 //----------------------------------------------------------------------------
 
@@ -1513,9 +1521,68 @@ int templateForOperation( const raw_bcd_number_t &bcdNumber1, int precision1
  */
 
 
+
+
+// Hash support
+
+#if !defined(MARTY_DECIMAL_DISABLE_MODERN_CPP_SUPPORT)
+
+// See
+// https://stackoverflow.com/questions/20511347/a-good-hash-function-for-a-vector
+// https://stackoverflow.com/questions/35985960/c-why-is-boosthash-combine-the-best-way-to-combine-hash-values/50978188#50978188
+// http://stackoverflow.com/questions/4948780/magic-number-in-boosthash-combine
+// https://stackoverflow.com/questions/19195183/how-to-properly-hash-the-custom-struct
+
+template <class T> inline
+std::size_t raw_bcd_hash_combine(std::size_t seed, T v)
+{
+    std::hash<T> hasher;
+    return seed ^ ( std::hash<T>()(v) + 0x9e3779b9 + (seed<<6) + (seed>>2) );
+    // 
+}
+
+
+template<typename DigitType> inline
+std::size_t raw_bcd_number_hasher(const std::vector<DigitType>& vec)
+{
+    std::size_t seed = vec.size();
+
+    for(auto x : vec)
+    {
+        //x = ((x >> 16) ^ x) * 0x45d9f3b;
+        //x = ((x >> 16) ^ x) * 0x45d9f3b;
+        //x = (x >> 16) ^ x;
+        seed = raw_bcd_hash_combine(seed,x);
+    }
+
+    return seed;
+}
+
+template<typename DigitType> inline
+std::size_t raw_bcd_number_hasher(const std::basic_string<DigitType>& vec)
+{
+    std::size_t seed = vec.size();
+
+    for(auto x : vec)
+    {
+        seed = raw_bcd_hash_combine(seed,x);
+    }
+
+    return seed;
+}
+
+
+#endif
+
 } // namespace bcd
 
 } // namespace marty
+
+
+
+
+
+
 
 
 

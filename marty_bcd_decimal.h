@@ -3,12 +3,16 @@
 
 #include <string>
 #include <cstdint>
+#include <cmath>
 #include <utility>
 #include <limits>
 #include <iostream>
 #include <exception>
 #include <stdexcept>
 #include <cstdio>
+
+
+
 
 #define MARTY_DECIMAL_H__079F0131_B01B_44ED_BF0F_8DFECAB67FD7__
 
@@ -27,6 +31,14 @@
     #define MARTY_DECIMAL_QT_USED
 
 #endif
+
+
+#if !defined(MARTY_DECIMAL_DISABLE_MODERN_CPP_SUPPORT)
+
+    #include <functional>
+
+#endif
+
 
 
 //----------------------------------------------------------------------------
@@ -175,6 +187,9 @@ public:
 
     double        toDouble() const;
     float         toFloat () const  { return (float)toDouble(); }
+
+    double        to_double() const;
+    float         to_float () const  { return (float)toDouble(); }
 
 
 //----------------------------------------------------------------------------
@@ -450,6 +465,17 @@ public:
     static char getDefaultDecimalSeparator( )          { return decimalSeparator; }
 
 
+    #if !defined(MARTY_DECIMAL_DISABLE_MODERN_CPP_SUPPORT)
+
+    std::size_t hash() const
+    {
+        std::size_t seed = bcd::raw_bcd_number_hasher(m_number);
+        seed = bcd::raw_bcd_hash_combine(seed, m_sign);
+        return bcd::raw_bcd_hash_combine(seed, m_precision);
+    }
+
+    #endif
+
 
 //----------------------------------------------------------------------------
 protected:
@@ -554,10 +580,66 @@ MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE_FRIENDS( double 
 //Decimal fromString( const T &t ) { return Decimal::fromString(t); }
 
 
-
-
 } // namespace marty
 
+
+
+
+
+
+
+// inject hash to std namespace
+// https://en.cppreference.com/w/cpp/utility/hash
+// https://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key
+
+namespace std{
+
+#if !defined(MARTY_DECIMAL_DISABLE_MODERN_CPP_SUPPORT)
+
+template <>
+struct hash<marty::Decimal>
+{
+
+    typedef marty::Decimal argument_type;
+    typedef std::size_t    result_type;
+
+    std::size_t operator()(const marty::Decimal& d) const
+    {
+        return d.hash();
+    }
+    
+};
+
+inline
+bool signbit(const marty::Decimal &d)
+{
+    return d.signum()<0 ? true : false;
+}
+
+
+#endif
+
+inline
+marty::Decimal sqrt(const marty::Decimal &d)
+{
+    return marty::Decimal( std::sqrt(double(d)) );
+}
+
+inline
+marty::Decimal fabs(const marty::Decimal &d)
+{
+    return d.abs();
+}
+
+inline
+marty::Decimal abs(const marty::Decimal &d)
+{
+    return d.abs();
+}
+
+
+
+} // namespace std
 
 
 
