@@ -626,24 +626,6 @@ std::string to_string(const marty::Decimal d)
     return d.toString();
 }
 
-inline
-double stod(const marty::Decimal d)
-{
-    return (double)d.toDouble();
-}
-
-inline
-long double stold(const marty::Decimal d)
-{
-    return (long double)d.toDouble();
-}
-
-inline
-float stof(const marty::Decimal d)
-{
-    return (float)d.toDouble();
-}
-
 #endif
 
 inline
