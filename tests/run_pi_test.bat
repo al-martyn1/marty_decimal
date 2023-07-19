@@ -1,0 +1,1 @@
+_out\msvc2017\x64\Release\pi_test.exe > doc\pi_test.txt
