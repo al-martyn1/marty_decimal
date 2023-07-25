@@ -23,6 +23,14 @@
 #endif
 
 
+#if defined(_MSC_VER)
+    #pragma warning(push)
+    #pragma warning(disable:4189) // warning C4189: 'decOrderDelta': local variable is initialized but not referenced
+#endif
+
+
+
+
 //----------------------------------------------------------------------------
 
 
@@ -249,7 +257,7 @@ int makeRawBcdNumberFromUnsigned( raw_bcd_number_t &bcdNumber
 
     while(u)
     {
-        bcdNumber.push_back( u%10 );
+        bcdNumber.push_back( (raw_bcd_number_t::value_type)(u%10) );
         u /= 10;
     }
 
@@ -269,9 +277,9 @@ int reducePrecision( raw_bcd_number_t &bcdNumber, int precision )
     if (precision<=0)
         return precision;
 
-    int i = 0, size = (int)bcdNumber.size();
+    std::size_t i = 0, size = bcdNumber.size();
 
-    for(; i!=size && i!=precision; ++i)
+    for(; i!=size && i!=(std::size_t)precision; ++i)
     {
         if (bcdNumber[i]!=0)
             break;
@@ -282,7 +290,7 @@ int reducePrecision( raw_bcd_number_t &bcdNumber, int precision )
 
     bcdNumber.erase( bcdNumber.begin(), eraseEnd );
 
-    return precision - i;
+    return precision - (int)i;
 }
 
 //----------------------------------------------------------------------------
@@ -294,7 +302,7 @@ int reducePrecisionFull( raw_bcd_number_t &bcdNumber, int precision )
     if (bcdNumber.size()<2)
         return precision;
 
-    int i = 0, size = (int)bcdNumber.size();
+    std::size_t i = 0, size = bcdNumber.size();
 
     for(; i!=(size-1); ++i)
     {
@@ -312,7 +320,7 @@ int reducePrecisionFull( raw_bcd_number_t &bcdNumber, int precision )
 
     bcdNumber.erase( bcdNumber.begin(), eraseEnd );
 
-    return precision - numberOfPositionsToReduce;
+    return precision - (int)numberOfPositionsToReduce;
 }
 
 //----------------------------------------------------------------------------
@@ -321,7 +329,7 @@ int reducePrecisionFull( raw_bcd_number_t &bcdNumber, int precision )
 inline
 int reduceLeadingZeros( raw_bcd_number_t &bcdNumber, int precision )
 {
-    while( (bcdNumber.size()>0) && (bcdNumber.back()==0) && (bcdNumber.size() > (precision+1)) )
+    while( (bcdNumber.size()>0u) && (bcdNumber.back()==0) && (bcdNumber.size() > (std::size_t)(precision+1)) )
     {
         bcdNumber.pop_back();
     }
@@ -520,7 +528,7 @@ raw_bcd_number_t::size_type getLsdIndex( const raw_bcd_number_t &bcdNumber )
 MARTY_RAW_BCD_FORCE_INLINE( decimal_digit_t getDigitByIndex( const raw_bcd_number_t &bcdNumber, int idx ) )
 //inline decimal_digit_t getDigitByIndex( const raw_bcd_number_t &bcdNumber, int idx )
 {
-    return (((unsigned)idx) < bcdNumber.size()) ? bcdNumber[idx] : (decimal_digit_t)0;
+    return (((unsigned)idx) < bcdNumber.size()) ? bcdNumber[(std::size_t)idx] : (decimal_digit_t)0u;
 }
 
 
@@ -568,6 +576,8 @@ MARTY_RAW_BCD_FORCE_INLINE( decimal_digit_t getDigitByIndex( const raw_bcd_numbe
 inline
 int getDecimalOrderByIndex( raw_bcd_number_t::size_type idx, const raw_bcd_number_t &bcdNumber, int precision )
 {
+    MARTY_ARG_USED(bcdNumber);
+
     int order = 0;
 
     if (idx!=(raw_bcd_number_t::size_type)-1)
@@ -971,9 +981,11 @@ inline decimal_digit_t bcdCorrectOverflowAfterSummation( decimal_digit_t &d )
     
     int res = results[d];
 
-    d = (decimal_digit_t)correctedDs[d];
+    //d = (decimal_digit_t)correctedDs[d]; // не используется, почему?
+    //NOTE: !!! Нет ли тут бага???
 
-    return res;
+    return (decimal_digit_t)res;
+    
 }
 
 //----------------------------------------------------------------------------
@@ -1016,7 +1028,7 @@ inline int rawAdditionImpl( raw_bcd_number_t &bcdRes
 
     MARTY_BCD_DECLARE_PRECISION_VIRTUAL_ADJUSTMENT_VARS_V2( bcdNumber1, precision1, bcdNumber2, precision2 )
 
-    bcdRes.reserve(decOrderDelta+1);
+    bcdRes.reserve((unsigned)decOrderDelta+1);
 
     bcdRes.resize( (std::size_t)decOrderDelta, (decimal_digit_t)0 );
 
@@ -1076,7 +1088,7 @@ inline int rawSubtractionImpl( raw_bcd_number_t &bcdRes
     MARTY_BCD_DECLARE_PRECISION_VIRTUAL_ADJUSTMENT_VARS_V2( bcdNumber1, precision1, bcdNumber2, precision2 )
 
     bcdRes.clear();
-    bcdRes.reserve(decOrderDelta+1);
+    bcdRes.reserve((unsigned)decOrderDelta+1);
 
     decimal_digit_t dPrev = 0;
 
@@ -1536,7 +1548,7 @@ int templateForOperation( const raw_bcd_number_t &bcdNumber1, int precision1
 template <class T> inline
 std::size_t raw_bcd_hash_combine(std::size_t seed, T v)
 {
-    std::hash<T> hasher;
+    //std::hash<T> hasher;
     return seed ^ ( std::hash<T>()(v) + 0x9e3779b9 + (seed<<6) + (seed>>2) );
     // 
 }
@@ -1579,10 +1591,7 @@ std::size_t raw_bcd_number_hasher(const std::basic_string<DigitType>& vec)
 } // namespace marty
 
 
-
-
-
-
-
-
+#if defined(_MSC_VER)
+    #pragma warning(pop)
+#endif
 

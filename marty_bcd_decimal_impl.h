@@ -48,7 +48,7 @@ bool Decimal::assignFromStringNoThrow( const char        *pStr )
     if (!pStr)
         return false;
 
-    const char *pStrOrg = pStr;
+    //const char *pStrOrg = pStr;
 
     // Skip ws
     while(*pStr==' ' || *pStr=='\t') ++pStr;
@@ -176,7 +176,16 @@ void Decimal::assignFromDoubleImpl( double d, int precision )
 
     char buf[32]; // forever enough for all doubles
 
-    sprintf( &buf[0], "%.*f", precision, d ); 
+    #if defined(_MSC_VER)
+        #pragma warning(push)
+        #pragma warning(disable:4996) // warning C4996: This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+    #endif
+
+    sprintf( &buf[0], "%.*f", precision, d );
+
+    #if defined(_MSC_VER)
+        #pragma warning(pop)
+    #endif
 
     assignFromString( &buf[0] );
 
@@ -186,6 +195,8 @@ void Decimal::assignFromDoubleImpl( double d, int precision )
 inline
 const char* Decimal::toString( char *pBuf, std::size_t bufSize, int precision, char dot ) const
 {
+    MARTY_ARG_USED(precision);
+
     if (bufSize < 5 )
         MARTY_DECIMAL_ASSERT_FAIL("marty::Decimal::toString: bufSize is not enough");
 
@@ -703,6 +714,13 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
 
                  return *this;
 
+        case RoundingMethod::roundingInvalid   : [[fallthrough]];
+        case RoundingMethod::roundFloor        : [[fallthrough]];
+        case RoundingMethod::roundCeil         : [[fallthrough]];
+        case RoundingMethod::roundHalfTowardsPositiveInf: [[fallthrough]];
+        case RoundingMethod::roundHalfTowardsNegativeInf: [[fallthrough]];
+
+        default: {}
     }
 
     MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl2: something goes wrong");
@@ -776,6 +794,9 @@ Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod rounding
              else
                  return negate().roundingImpl2( requestedPrecision, roundingMethod ).negate();
 
+        case RoundingMethod::roundingInvalid: [[fallthrough]];
+
+        default: {}
     }
 
     MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl: rounding method not implemented yet");
@@ -923,7 +944,7 @@ Decimal Decimal::implGetExPercentOf ( const Decimal &scale, const Decimal &d, in
 
     if (msp>precision)
     {
-        return tmp.rounded( msp+numSignificantDigits-1, RoundingMethod::roundMath );
+        return tmp.rounded( (int)(msp+numSignificantDigits-1), RoundingMethod::roundMath );
     }
 
     return tmp.rounded( precision, RoundingMethod::roundMath );
