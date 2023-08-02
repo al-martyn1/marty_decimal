@@ -1279,7 +1279,7 @@ bool rawDivisionCheckContinueCondition( int dividendPrecision, int divisorPrecis
     //     MARTY_DECIMAL_ASSERT_FAIL("rawDivisionCheckContinueCondition: absolute precision not implemented");
     // }
 
-    return false;
+    //return false;
 
 }
 

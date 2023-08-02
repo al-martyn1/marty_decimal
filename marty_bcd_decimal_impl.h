@@ -729,6 +729,11 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
 }
 
 //----------------------------------------------------------------------------
+// В данной функции мы не можем быть уверены, что управление никогда не достигнет последнего return, поэтому просто давим варнинг
+#if defined(_MSC_VER)
+    #pragma warning(push)
+    #pragma warning(disable:4702) // warning C4702: unreachable code
+#endif
 inline
 Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod roundingMethod )
 {
@@ -804,6 +809,10 @@ Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod rounding
     return *this;
 
 }
+
+#if defined(_MSC_VER)
+    #pragma warning(pop)
+#endif
 
 //----------------------------------------------------------------------------
 inline
