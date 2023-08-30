@@ -23,14 +23,6 @@
 #endif
 
 
-#if defined(_MSC_VER)
-    #pragma warning(push)
-    #pragma warning(disable:4189) // warning C4189: 'decOrderDelta': local variable is initialized but not referenced
-#endif
-
-
-
-
 //----------------------------------------------------------------------------
 
 
@@ -257,8 +249,8 @@ int makeRawBcdNumberFromUnsigned( raw_bcd_number_t &bcdNumber
 
     while(u)
     {
-        bcdNumber.push_back( (raw_bcd_number_t::value_type)(u%10) );
-        u /= 10;
+        bcdNumber.push_back( (decimal_digit_t)(u%10u) );
+        u /= 10u;
     }
 
     if (bcdNumber.empty())
@@ -299,10 +291,12 @@ int reducePrecision( raw_bcd_number_t &bcdNumber, int precision )
 inline
 int reducePrecisionFull( raw_bcd_number_t &bcdNumber, int precision )
 {
-    if (bcdNumber.size()<2)
+    std::size_t size = bcdNumber.size();
+
+    if (size<2)
         return precision;
 
-    std::size_t i = 0, size = bcdNumber.size();
+    std::size_t i = 0;
 
     for(; i!=(size-1); ++i)
     {
@@ -525,10 +519,10 @@ raw_bcd_number_t::size_type getLsdIndex( const raw_bcd_number_t &bcdNumber )
 }
 
 //----------------------------------------------------------------------------
-MARTY_RAW_BCD_FORCE_INLINE( decimal_digit_t getDigitByIndex( const raw_bcd_number_t &bcdNumber, int idx ) )
+MARTY_RAW_BCD_FORCE_INLINE( decimal_digit_t getDigitByIndex( const raw_bcd_number_t &bcdNumber, std::size_t idx ) )
 //inline decimal_digit_t getDigitByIndex( const raw_bcd_number_t &bcdNumber, int idx )
 {
-    return (((unsigned)idx) < bcdNumber.size()) ? bcdNumber[(std::size_t)idx] : (decimal_digit_t)0u;
+    return (idx < bcdNumber.size()) ? bcdNumber[idx] : (decimal_digit_t)0;
 }
 
 
@@ -564,13 +558,16 @@ MARTY_RAW_BCD_FORCE_INLINE( decimal_digit_t getDigitByIndex( const raw_bcd_numbe
                                                                                                                   \
                 int maxPrecision = std::max( precision1, precision2 );                                            \
                                                                                                                   \
-                int decOrderDelta = decOrderMax - decOrderMin;
+                int decOrderDelta = decOrderMax - decOrderMin;                                                    \
+                                                                                                                  \
+                MARTY_ARG_USED(maxPrecision);                                                                     \
+                MARTY_ARG_USED(decOrderDelta);
 
 
 #define MARTY_BCD_PRECISION_GET_DIGITS_BY_VIRTUAL_ADJUSTMENT_VARS( decOrderValue, bcdNumber1, bcdNumber2 )        \
                                                                                                                   \
-                decimal_digit_t d1 = getDigitByIndex(bcdNumber1, (decOrderValue) - decOrderMin1 );                \
-                decimal_digit_t d2 = getDigitByIndex(bcdNumber2, (decOrderValue) - decOrderMin2 );
+                decimal_digit_t d1 = getDigitByIndex(bcdNumber1, (std::size_t)((decOrderValue) - decOrderMin1) ); \
+                decimal_digit_t d2 = getDigitByIndex(bcdNumber2, (std::size_t)((decOrderValue) - decOrderMin2) );
 
 //----------------------------------------------------------------------------
 inline
@@ -738,6 +735,7 @@ const char* formatRawBcdNumber( const raw_bcd_number_t &bcdNumber, int precision
     //int maxPrecision = std::max( precision1, precision2 );
 
     int decOrderDelta = decOrderMax - decOrderMin;
+    MARTY_ARG_USED(decOrderDelta);
 
     // Форматирование, как и сравение, начинаем со старших разрядов
 
@@ -755,7 +753,7 @@ const char* formatRawBcdNumber( const raw_bcd_number_t &bcdNumber, int precision
 
         const int decOrderValue = decOrder-1; 
 
-        decimal_digit_t d = getDigitByIndex( bcdNumber, (decOrderValue) - (-precision) );
+        decimal_digit_t d = getDigitByIndex( bcdNumber, (std::size_t)((decOrderValue) - (-precision)) );
 
         if (decOrderValue==-1 && bufPos!=0) // Добрались до первой цифры после точки
         {
@@ -794,7 +792,7 @@ int getLowestDigit( const raw_bcd_number_t &bcdNumber, int precision )
     const int decOrderMin   = -precision;
     const int decOrderValue = decOrderMin; // decOrder-1; 
 
-    decimal_digit_t d = getDigitByIndex( bcdNumber, (decOrderValue) - (-precision) );
+    decimal_digit_t d = getDigitByIndex( bcdNumber, (std::size_t)((decOrderValue) - (-precision)) );
 
     return d;
 }
@@ -817,6 +815,7 @@ std::uint64_t rawToInt( const raw_bcd_number_t &bcdNumber, int precision )
         decOrderMax = 0;
 
     int decOrderDelta = decOrderMax - decOrderMin;
+    MARTY_ARG_USED(decOrderDelta);
 
     std::uint64_t res = 0;
 
@@ -824,7 +823,7 @@ std::uint64_t rawToInt( const raw_bcd_number_t &bcdNumber, int precision )
     {
         const int decOrderValue = decOrder-1; 
 
-        decimal_digit_t d = getDigitByIndex( bcdNumber, (decOrderValue) - (-precision) );
+        decimal_digit_t d = getDigitByIndex( bcdNumber, (std::size_t)((decOrderValue) - (-precision)) );
 
         if (decOrderValue==-1) // Добрались до первой цифры после точки
         {
@@ -858,6 +857,7 @@ double rawToDouble( const raw_bcd_number_t &bcdNumber, int precision )
         decOrderMax = 0;
 
     int decOrderDelta = decOrderMax - decOrderMin;
+    MARTY_ARG_USED(decOrderDelta);
 
     double res = 0;
     double devider = 1;
@@ -866,7 +866,7 @@ double rawToDouble( const raw_bcd_number_t &bcdNumber, int precision )
     {
         const int decOrderValue = decOrder-1; 
 
-        decimal_digit_t d = getDigitByIndex( bcdNumber, (decOrderValue) - (-precision) );
+        decimal_digit_t d = getDigitByIndex( bcdNumber, (std::size_t)((decOrderValue) - (-precision)) );
 
         if (decOrderValue<=-1) // Добрались до цифр после точки
         {
@@ -981,11 +981,9 @@ inline decimal_digit_t bcdCorrectOverflowAfterSummation( decimal_digit_t &d )
     
     int res = results[d];
 
-    //d = (decimal_digit_t)correctedDs[d]; // не используется, почему?
-    //NOTE: !!! Нет ли тут бага???
+    d = (decimal_digit_t)correctedDs[d];
 
     return (decimal_digit_t)res;
-    
 }
 
 //----------------------------------------------------------------------------
@@ -1028,7 +1026,7 @@ inline int rawAdditionImpl( raw_bcd_number_t &bcdRes
 
     MARTY_BCD_DECLARE_PRECISION_VIRTUAL_ADJUSTMENT_VARS_V2( bcdNumber1, precision1, bcdNumber2, precision2 )
 
-    bcdRes.reserve((unsigned)decOrderDelta+1);
+    bcdRes.reserve((std::size_t)(decOrderDelta+1));
 
     bcdRes.resize( (std::size_t)decOrderDelta, (decimal_digit_t)0 );
 
@@ -1088,7 +1086,7 @@ inline int rawSubtractionImpl( raw_bcd_number_t &bcdRes
     MARTY_BCD_DECLARE_PRECISION_VIRTUAL_ADJUSTMENT_VARS_V2( bcdNumber1, precision1, bcdNumber2, precision2 )
 
     bcdRes.clear();
-    bcdRes.reserve((unsigned)decOrderDelta+1);
+    bcdRes.reserve((std::size_t)(decOrderDelta+1));
 
     decimal_digit_t dPrev = 0;
 
@@ -1279,7 +1277,7 @@ bool rawDivisionCheckContinueCondition( int dividendPrecision, int divisorPrecis
     //     MARTY_DECIMAL_ASSERT_FAIL("rawDivisionCheckContinueCondition: absolute precision not implemented");
     // }
 
-    //return false;
+    // return false;
 
 }
 
@@ -1591,7 +1589,10 @@ std::size_t raw_bcd_number_hasher(const std::basic_string<DigitType>& vec)
 } // namespace marty
 
 
-#if defined(_MSC_VER)
-    #pragma warning(pop)
-#endif
+
+
+
+
+
+
 

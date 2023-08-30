@@ -49,6 +49,7 @@ bool Decimal::assignFromStringNoThrow( const char        *pStr )
         return false;
 
     //const char *pStrOrg = pStr;
+    //MARTY_ARG_USED(pStrOrg);
 
     // Skip ws
     while(*pStr==' ' || *pStr=='\t') ++pStr;
@@ -725,7 +726,7 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
 
     MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl2: something goes wrong");
 
-	return *this;
+    // return *this;
 }
 
 //----------------------------------------------------------------------------
