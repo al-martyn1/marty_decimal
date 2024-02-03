@@ -55,12 +55,13 @@ public:
     {
         // https://en.wikipedia.org/wiki/Rounding
 
-        roundingInvalid                               ,
+        roundingInvalid                               = (RoundingMethod)-1,
+        roundingNone                                  =  0,
 
 
         // Directed rounding to an integer methods
 
-        roundDown                                     , // roundFloor, roundTowardNegInf
+        roundDown                                     =  1, // roundFloor, roundTowardNegInf
         roundFloor        = roundDown                 ,
         roundTowardNegInf = roundDown                 , // round towards negative infinity
         

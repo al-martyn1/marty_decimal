@@ -37,6 +37,7 @@ const char* Decimal::getRoundingMethodName( RoundingMethod m )
         case RoundingMethod::roundHalfTowardsInf : return "roundHalfTowardsInf";
         case RoundingMethod::roundHalfToEven     : return "roundHalfToEven";
         case RoundingMethod::roundHalfToOdd      : return "roundHalfToOdd";
+        case RoundingMethod::roundingNone        : return "roundNone";
         default: return "UNKNOWN ROUNDING";
     }
 }
@@ -597,6 +598,11 @@ Decimal Decimal::makeMinimalPrecisionFive() const
 inline
 Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod roundingMethod )
 {
+    if (roundingMethod==RoundingMethod::roundingNone)
+    {
+        return *this;
+    }
+
     if (requestedPrecision<0)
         return *this;
 
@@ -720,6 +726,7 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
         case RoundingMethod::roundCeil         : [[fallthrough]];
         case RoundingMethod::roundHalfTowardsPositiveInf: [[fallthrough]];
         case RoundingMethod::roundHalfTowardsNegativeInf: [[fallthrough]];
+        case RoundingMethod::roundingNone      : [[fallthrough]];
 
         default: {}
     }
@@ -738,6 +745,11 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
 inline
 Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod roundingMethod )
 {
+    if (roundingMethod==RoundingMethod::roundingNone)
+    {
+        return *this;
+    }
+
     if (roundingMethod==RoundingMethod::roundingInvalid)
     {
         MARTY_DECIMAL_ASSERT_FAIL("Decimal::roundingImpl: rounding method isInvalid");
@@ -801,6 +813,8 @@ Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod rounding
                  return negate().roundingImpl2( requestedPrecision, roundingMethod ).negate();
 
         case RoundingMethod::roundingInvalid: [[fallthrough]];
+
+        case RoundingMethod::roundingNone   : [[fallthrough]];
 
         default: {}
     }
