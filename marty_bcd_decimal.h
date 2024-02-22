@@ -55,7 +55,7 @@ public:
     {
         // https://en.wikipedia.org/wiki/Rounding
 
-        roundingInvalid                               = (RoundingMethod)-1,
+        roundingInvalid                               = -1, // (RoundingMethod)
         roundingNone                                  =  0,
 
 
