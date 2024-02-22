@@ -49,7 +49,16 @@ std::uint32_t getMillisecTick()
 {
     #if defined(WIN32) || defined(_WIN32)
 
+        #if defined(_MSC_VER)
+            #pragma warning(push)
+            #pragma warning(disable:28159) // warning C28159: Consider using 'GetTickCount64' instead of 'GetTickCount'
+        #endif
+
         return (std::uint32_t)GetTickCount();
+
+        #if defined(_MSC_VER)
+            #pragma warning(pop)
+        #endif
 
     #else // Linups users can add native millisec counter getter or new std chrono fns
 
