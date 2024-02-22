@@ -49,14 +49,17 @@ std::uint32_t getMillisecTick()
 {
     #if defined(WIN32) || defined(_WIN32)
 
-        #if defined(_MSC_VER)
+        // https://devblogs.microsoft.com/cppblog/visual-c-compiler-version/
+        // https://learn.microsoft.com/en-us/cpp/overview/compiler-versions?view=msvc-170
+
+        #if defined(_MSC_VER) && _MSC_VER>1929
             #pragma warning(push)
             #pragma warning(disable:28159) // warning C28159: Consider using 'GetTickCount64' instead of 'GetTickCount'
         #endif
 
         return (std::uint32_t)GetTickCount();
 
-        #if defined(_MSC_VER)
+        #if defined(_MSC_VER) && _MSC_VER>1929
             #pragma warning(pop)
         #endif
 
