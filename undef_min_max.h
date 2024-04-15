@@ -8,4 +8,3 @@
     #undef max
 #endif
 
-
