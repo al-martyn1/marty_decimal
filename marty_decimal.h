@@ -1,5 +1,8 @@
 #pragma once
 
+#ifndef MARTY_DECIMAL_MARTY_DECIMAL_H
+#define MARTY_DECIMAL_MARTY_DECIMAL_H
+
 #ifndef MARTY_DECIMAL_ASSERT_FAIL
 
     #define MARTY_DECIMAL_ASSERT_FAIL(msg)    throw std::runtime_error(msg)
@@ -113,4 +116,6 @@ bool mullersRecurrenceFunctionTest( std::vector< SomeFloatingType > &testResults
 
 } // namespace marty
 
+
+#endif // MARTY_DECIMAL_MARTY_DECIMAL_H
 
