@@ -207,22 +207,22 @@ protected:
         return bcd::rawToInt( m_number, m_precision );
     }
 
-    template<>
-    std::int64_t toIntImpl<std::int64_t>() const
-    {
-        if (m_sign==0)
-            return 0;
-        else if (m_sign>0)
-            return (std::int64_t)getAsUint64();
-        else 
-            return -(std::int64_t)getAsUint64();
-    }
+    // template<>
+    // std::int64_t toIntImpl<std::int64_t>() const;
+    // {
+    //     if (m_sign==0)
+    //         return 0;
+    //     else if (m_sign>0)
+    //         return (std::int64_t)getAsUint64();
+    //     else 
+    //         return -(std::int64_t)getAsUint64();
+    // }
 
-    template<>
-    std::uint64_t toIntImpl<std::uint64_t>() const
-    {
-        return (std::uint64_t)toIntImpl<std::int64_t>();
-    }
+    // template<>
+    // std::uint64_t toIntImpl<std::uint64_t>() const;
+    // {
+    //     return (std::uint64_t)toIntImpl<std::int64_t>();
+    // }
 
 
 //----------------------------------------------------------------------------
@@ -332,10 +332,10 @@ public:
 
     //------------------------------
     // операторы преобразования типа 
-    explicit operator std::int64_t() const  { return           toIntImpl<std:: int64_t>(); }
-    explicit operator std::uint64_t() const { return           toIntImpl<std::uint64_t>(); }
-    explicit operator int() const           { return (int)     toIntImpl<std:: int64_t>(); }
-    explicit operator unsigned() const      { return (unsigned)toIntImpl<std::uint64_t>(); }
+    explicit operator std::int64_t() const  ; // { return           toIntImpl<std:: int64_t>(); }
+    explicit operator std::uint64_t() const ; // { return           toIntImpl<std::uint64_t>(); }
+    explicit operator int() const           ; // { return (int)     toIntImpl<std:: int64_t>(); }
+    explicit operator unsigned() const      ; // { return (unsigned)toIntImpl<std::uint64_t>(); }
     explicit operator float() const         { return           toFloat(); }
     explicit operator double() const        { return           toDouble(); }
 
@@ -515,6 +515,35 @@ protected:
 }; // class Decimal
 
 //----------------------------------------------------------------------------
+
+
+
+//----------------------------------------------------------------------------
+template<>
+std::int64_t Decimal::toIntImpl<std::int64_t>() const
+{
+    if (m_sign==0)
+        return 0;
+    else if (m_sign>0)
+        return (std::int64_t)getAsUint64();
+    else 
+        return -(std::int64_t)getAsUint64();
+}
+
+//----------------------------------------------------------------------------
+template<>
+std::uint64_t Decimal::toIntImpl<std::uint64_t>() const
+{
+    return (std::uint64_t)toIntImpl<std::int64_t>();
+}
+
+//----------------------------------------------------------------------------
+inline  /* explicit  */ Decimal::operator std::int64_t() const  { return           toIntImpl<std:: int64_t>(); }
+inline  /* explicit  */ Decimal::operator std::uint64_t() const { return           toIntImpl<std::uint64_t>(); }
+inline  /* explicit  */ Decimal::operator int() const           { return (int)     toIntImpl<std:: int64_t>(); }
+inline  /* explicit  */ Decimal::operator unsigned() const      { return (unsigned)toIntImpl<std::uint64_t>(); }
+
+
 
 
 
