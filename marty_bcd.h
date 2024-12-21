@@ -263,6 +263,7 @@ int makeRawBcdNumberFromUnsigned( raw_bcd_number_t &bcdNumber
 //----------------------------------------------------------------------------
 //! Обрезаем точность, если возможно (в хвосте есть нули) до десятичной точки
 //!!!
+#include "warnings/push_disable_spectre_mitigation.h"
 inline
 int reducePrecision( raw_bcd_number_t &bcdNumber, int precision )
 {
@@ -284,6 +285,7 @@ int reducePrecision( raw_bcd_number_t &bcdNumber, int precision )
 
     return precision - (int)i;
 }
+#include "warnings/pop.h"
 
 //----------------------------------------------------------------------------
 //! Обрезаем точность, если возможно (в хвосте есть нули), даже если пересекаем позицию десятичной точки
@@ -320,6 +322,7 @@ int reducePrecisionFull( raw_bcd_number_t &bcdNumber, int precision )
 //----------------------------------------------------------------------------
 //! Обрезаем ведущие незначащие нули
 //!!!
+#include "warnings/push_disable_spectre_mitigation.h"
 inline
 int reduceLeadingZeros( raw_bcd_number_t &bcdNumber, int precision )
 {
@@ -330,9 +333,11 @@ int reduceLeadingZeros( raw_bcd_number_t &bcdNumber, int precision )
 
     return precision;
 }
+#include "warnings/pop.h"
 
 //----------------------------------------------------------------------------
 //! Обрезаем ведущие нули, включая те, которые после точки
+#include "warnings/push_disable_spectre_mitigation.h"
 inline
 int reduceLeadingZerosFull( raw_bcd_number_t &bcdNumber, int precision )
 {
@@ -345,6 +350,7 @@ int reduceLeadingZerosFull( raw_bcd_number_t &bcdNumber, int precision )
 
     return precision;
 }
+#include "warnings/pop.h"
 
 //----------------------------------------------------------------------------
 //! Расширяем точность до заданной
@@ -519,12 +525,13 @@ raw_bcd_number_t::size_type getLsdIndex( const raw_bcd_number_t &bcdNumber )
 }
 
 //----------------------------------------------------------------------------
+#include "warnings/push_disable_spectre_mitigation.h"
 MARTY_RAW_BCD_FORCE_INLINE( decimal_digit_t getDigitByIndex( const raw_bcd_number_t &bcdNumber, std::size_t idx ) )
 //inline decimal_digit_t getDigitByIndex( const raw_bcd_number_t &bcdNumber, int idx )
 {
     return (idx < bcdNumber.size()) ? bcdNumber[idx] : (decimal_digit_t)0;
 }
-
+#include "warnings/pop.h"
 
 //----------------------------------------------------------------------------
 #define MARTY_BCD_DECLARE_PRECISION_VIRTUAL_ADJUSTMENT_VARS()                                  \
@@ -1152,6 +1159,7 @@ raw_bcd_number_t rawBcdMakeZeroPrecisionFromNegative( const raw_bcd_number_t &bc
     Небольшая оптимизация - нулевые частичные суммы не вычисляем.
     Чем больше нулей в числе - тем быстрее производится умножение.
  */
+#include "warnings/push_disable_spectre_mitigation.h"
 inline
 int rawMultiplication( raw_bcd_number_t &multRes
                   , const raw_bcd_number_t &bcdNumberArg1, int precision1
@@ -1254,6 +1262,7 @@ int rawMultiplication( raw_bcd_number_t &multRes
     return reducePrecision( multRes, precisionRes );
 
 }
+#include "warnings/pop.h"
 
 //----------------------------------------------------------------------------
 inline
@@ -1283,6 +1292,7 @@ bool rawDivisionCheckContinueCondition( int dividendPrecision, int divisorPrecis
 
 //----------------------------------------------------------------------------
 //! Деление "сырых" BCD чисел с "плавающей" точкой.
+#include "warnings/push_disable_spectre_mitigation.h"
 inline
 int rawDivision( raw_bcd_number_t &quotient
                , raw_bcd_number_t dividend, int dividendPrecision
@@ -1371,6 +1381,7 @@ int rawDivision( raw_bcd_number_t &quotient
 
     return resultPrecision;
 }
+#include "warnings/pop.h"
 
 
 /* Шаблон перебора цифр от старших к младшим - сравнение, возможно - деление

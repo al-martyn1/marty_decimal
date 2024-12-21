@@ -117,6 +117,7 @@ void Decimal::assignFromString( const std::string &str  )
 }
 
 //----------------------------------------------------------------------------
+#include "warnings/push_disable_spectre_mitigation.h"
 inline
 void Decimal::assignFromIntImpl( std::int64_t  i, int precision )
 {
@@ -142,6 +143,7 @@ void Decimal::assignFromIntImpl( std::int64_t  i, int precision )
     }
 
 }
+#include "warnings/pop.h"
 
 //----------------------------------------------------------------------------
 inline
@@ -275,6 +277,7 @@ Decimal& Decimal::operator=( Decimal d2 )
 }
 
 //----------------------------------------------------------------------------
+#include "warnings/push_disable_spectre_mitigation.h"
 inline
 Decimal& Decimal::add( const Decimal &d )
 {
@@ -351,6 +354,7 @@ Decimal& Decimal::add( const Decimal &d )
     return *this;
 
 }
+#include "warnings/pop.h"
 
 //----------------------------------------------------------------------------
 inline
