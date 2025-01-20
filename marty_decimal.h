@@ -57,7 +57,7 @@ std::uint32_t getMillisecTick()
 
         #if defined(_MSC_VER) && _MSC_VER>1929
             #pragma warning(push)
-            #pragma warning(disable:28159) // warning C28159: Consider using 'GetTickCount64' instead of 'GetTickCount'
+            #pragma warning(disable:28159) // - warning C28159: Consider using 'GetTickCount64' instead of 'GetTickCount'
         #endif
 
         return (std::uint32_t)GetTickCount();

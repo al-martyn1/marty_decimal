@@ -182,7 +182,7 @@ void Decimal::assignFromDoubleImpl( double d, int precision )
 
     #if defined(_MSC_VER)
         #pragma warning(push)
-        #pragma warning(disable:4996) // warning C4996: This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+        #pragma warning(disable:4996) // - warning C4996: This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
     #endif
 
     sprintf( &buf[0], "%.*f", precision, d );
@@ -744,7 +744,7 @@ Decimal& Decimal::roundingImpl2( int requestedPrecision, RoundingMethod rounding
 // В данной функции мы не можем быть уверены, что управление никогда не достигнет последнего return, поэтому просто давим варнинг
 #if defined(_MSC_VER)
     #pragma warning(push)
-    #pragma warning(disable:4702) // warning C4702: unreachable code
+    #pragma warning(disable:4702) // - warning C4702: unreachable code
 #endif
 inline
 Decimal& Decimal::roundingImpl1( int requestedPrecision, RoundingMethod roundingMethod )

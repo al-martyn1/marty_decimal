@@ -374,7 +374,7 @@ int extendPrecision( raw_bcd_number_t &bcdNumber, int curPrecision, int newPreci
 
 //----------------------------------------------------------------------------
 //! Расширяем перед точкой
-//!!! Оно не нужно
+//!!! Оно не нужно - что не нужно? Надо будет глянуть сюда повнимательнее
 /*
 inline
 int extendLeadings( raw_bcd_number_t &bcdNumber, int precision, int requestedLeadings )
