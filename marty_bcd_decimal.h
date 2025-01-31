@@ -237,16 +237,16 @@ public:
 
 
     //------------------------------
-    Decimal( ) : m_sign(0), m_precision(0), m_number()  {}
-    Decimal( const Decimal &d ) : m_sign(d.m_sign), m_precision(d.m_precision), m_number(d.m_number)  {}
+    Decimal( ) : m_number(), m_sign(0), m_precision(0) {}
+    Decimal( const Decimal &d ) : m_number(d.m_number), m_sign(d.m_sign), m_precision(d.m_precision)  {}
 
-    Decimal( int            v, int precision = 0 ) { assignFromInt( v, precision ); }
-    Decimal( unsigned       v, int precision = 0 ) { assignFromInt( v, precision ); }
-    Decimal( std::int64_t   v, int precision = 0 ) { assignFromInt( v, precision ); }
-    Decimal( std::uint64_t  v, int precision = 0 ) { assignFromInt( v, precision ); }
+    Decimal( int            v, int precision = 0 )  { assignFromInt( v, precision ); }
+    Decimal( unsigned       v, int precision = 0 )  { assignFromInt( v, precision ); }
+    Decimal( std::int64_t   v, int precision = 0 )  { assignFromInt( v, precision ); }
+    Decimal( std::uint64_t  v, int precision = 0 )  { assignFromInt( v, precision ); }
 
     Decimal( double         d, int precision = 12 ) { assignFromFloat( d, precision ); }
-    Decimal( float          d, int precision = 6 ) { assignFromFloat( d, precision ); }
+    Decimal( float          d, int precision = 6 )  { assignFromFloat( d, precision ); }
 
     Decimal( const char        *pStr ) { assignFromString( pStr ); }
     Decimal( const std::string &str  ) { assignFromString( str  ); }
@@ -490,12 +490,12 @@ protected:
 
 
     Decimal( int sign, int precision, bcd::raw_bcd_number_t number )
-    : m_sign(sign), m_precision(precision), m_number(number)
+    : m_number(number), m_sign(sign), m_precision(precision)
     {}
 
+    bcd::raw_bcd_number_t   m_number;
     int                     m_sign;
     int                     m_precision;
-    bcd::raw_bcd_number_t   m_number;
     //------------------------------
     // Global affecting options
 
