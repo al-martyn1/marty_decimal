@@ -609,6 +609,11 @@ MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE_FRIENDS( double 
 //template<typename T>
 //Decimal fromString( const T &t ) { return Decimal::fromString(t); }
 
+inline
+std::string to_string(const marty::Decimal &d)
+{
+    return d.toString();
+}
 
 
 
@@ -651,7 +656,7 @@ bool signbit(const marty::Decimal &d)
 }
 
 inline
-std::string to_string(const marty::Decimal d)
+std::string to_string(const marty::Decimal &d)
 {
     return d.toString();
 }
