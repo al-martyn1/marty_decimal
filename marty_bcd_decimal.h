@@ -189,8 +189,8 @@ public:
     double        toDouble() const;
     float         toFloat () const  { return (float)toDouble(); }
 
-    double        to_double() const;
-    float         to_float () const  { return (float)toDouble(); }
+    double        to_double() const { return toDouble(); }
+    float         to_float () const { return (float)toDouble(); }
 
 
 //----------------------------------------------------------------------------
