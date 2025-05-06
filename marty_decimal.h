@@ -32,7 +32,10 @@
 
 #if defined(WIN32) || defined(_WIN32)
 
-    #include <winsock2.h>
+    #ifndef WIN32_LEAN_AND_MEAN
+        #define WIN32_LEAN_AND_MEAN
+    #endif
+    //#include <winsock2.h>
     #include <windows.h>
 
 #endif
