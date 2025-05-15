@@ -283,6 +283,9 @@ public:
     Decimal& sub( const Decimal &d );
     Decimal& mul( const Decimal &d );
     Decimal& div( const Decimal &d, int precision = -1, unsigned numSignificantDigits = (unsigned)-1 );
+    Decimal& pow10( int p );
+    Decimal  powered10( int p ) const;
+    Decimal  powd10( int p ) const { return powered10(p); }
 
     Decimal  mod_helper_raw_div( const Decimal &d ) const; //!< Возвращает частное (с одним макс знаком после запятой, по модулю, без учёта знака)
     Decimal  mod_helper( const Decimal &d ) const; //!< Возвращает целое (в виде Decimal), сколько раз 'd' влезает в текущее (по модулю) - для реализации получения частного и остатка от деления, кто как пожелает на свой вкус
@@ -388,6 +391,8 @@ public:
     bool precisionExpandTo( int p ); //!< Всегда возвращает true
     bool precisionShrinkTo( int p ); //!< Возвращает true, если все обрезанные цифры были нулём
     bool precisionFitTo( int p );    //!< Возвращает true, если все обрезанные цифры были нулём (если было обрезание), или true (если было расширение или ничего)
+
+    bool precisionShrink(); //!< Удаляет незначащие нули в дробной части. Всегда возвращает true
 
     //------------------------------
     //! Цифра чётна?

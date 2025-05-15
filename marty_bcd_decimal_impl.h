@@ -450,6 +450,62 @@ Decimal& Decimal::div( const Decimal &d, int precision, unsigned numSignificantD
 
 //----------------------------------------------------------------------------
 inline
+Decimal& Decimal::pow10( int p )
+{
+    MARTY_ARG_USED(p);
+
+    if (!p)
+        return *this;
+
+    if (m_precision<0) // Тут наверное, нужен ассерт
+        m_precision = 0;
+
+    // m_precision - количество знаков после запятой
+
+    if (p<0)
+    {
+        // Деление на 10**p
+        p = -p;
+        m_precision += p;
+        auto newSize = std::size_t(m_precision+1);
+        if (newSize>m_number.size())
+        {
+            // Надо добавить нулей в конец строки/вектора (спереди числа)
+            // чтобы размер m_number стал m_precision+1
+
+            m_number.insert(m_number.end(), newSize-m_number.size(), 0u);
+        }
+
+        precisionShrink();
+    }
+    else
+    {
+        // Умножение на 10**p
+        if (m_precision>=p)
+        {
+            m_precision -= p; // Просто уменьшаем количество разрядов после десятичной точки
+        }
+        else
+        {
+            p -= m_precision;
+            m_precision = 0;
+            m_number.insert(m_number.begin(), std::size_t(p), 0u);
+        }
+    }
+
+    return *this;
+}
+
+//----------------------------------------------------------------------------
+Decimal  Decimal::powered10( int p ) const
+{
+    auto cp = *this;
+    cp.pow10(p);
+    return cp;
+}
+
+//----------------------------------------------------------------------------
+inline
 Decimal  Decimal::mod_helper_raw_div( const Decimal &d ) const //!< Возвращает частное (с одним макс знаком после запятой, по модулю, без учёта знака) - 
 {
     if (d.m_sign==0)
@@ -516,6 +572,23 @@ bool Decimal::precisionShrinkTo( int p )
     m_precision = bcd::truncatePrecision( m_number, m_precision, p, &lastTruncatedDigit, &allTruncatedAreZeros );
 
     return allTruncatedAreZeros;
+}
+
+//----------------------------------------------------------------------------
+inline
+bool Decimal::precisionShrink() //!< Удаляет незначащие нули в дробной части. Всегда возвращает true
+{
+    int i = 0;
+    for(; i<m_precision; ++i)
+    {
+        if (m_number[std::size_t(i)]!=0)
+            break;
+    }
+
+    m_precision -= i;
+    m_number.erase(m_number.begin(), m_number.begin()+std::ptrdiff_t(i));
+
+    return true;
 }
 
 //----------------------------------------------------------------------------
