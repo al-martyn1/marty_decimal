@@ -1,4 +1,3 @@
-#pragma once
 
 #if defined(min)
     #undef min
