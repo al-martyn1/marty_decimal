@@ -229,6 +229,8 @@ const char* Decimal::toString( char *pBuf, std::size_t bufSize, int precision, c
 inline
 std::string Decimal::toString( int precision, char dot ) const
 {
+    // TODO: Тут я схалявил, и решил использовать реализацию для char буфера 
+    // Надо переделать, чтобы форматировалось прямо в строку и не имело ограничений на длину числа
     char buf[4096]; // 4096 знаков в числе хватит для всех :)
     return toString( &buf[0], sizeof(buf), precision, dot );
 }

@@ -636,6 +636,10 @@ std::string to_string(const marty::Decimal &d)
 // https://en.cppreference.com/w/cpp/utility/hash
 // https://stackoverflow.com/questions/17016175/c-unordered-map-using-a-custom-class-type-as-the-key
 
+/*
+
+// Deprcecated
+
 namespace std{
 
 #if !defined(MARTY_DECIMAL_DISABLE_MODERN_CPP_SUPPORT)
@@ -689,7 +693,7 @@ marty::Decimal abs(const marty::Decimal &d)
 
 
 } // namespace std
-
+*/
 
 
 
