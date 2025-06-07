@@ -295,20 +295,21 @@ public:
     
     
     //----------------------------------------------------------------------------
-    Decimal operator + ( Decimal d2 ) const { Decimal res = *this; return res.add(d2); }
-    Decimal operator - ( Decimal d2 ) const { Decimal res = *this; return res.sub(d2); }
+    Decimal operator + (const Decimal &d2 ) const { Decimal res = *this; return res.add(d2); }
+    Decimal operator - (const Decimal &d2 ) const { Decimal res = *this; return res.sub(d2); }
     Decimal operator - (            ) const { Decimal res = *this; if (res.m_sign!=0) res.m_sign = -res.m_sign; return res; }
-    Decimal operator * ( Decimal d2 ) const { Decimal res = *this; return res.mul(d2); }
+    Decimal operator * (const Decimal &d2 ) const { Decimal res = *this; return res.mul(d2); }
     //Decimal divide( Decimal devider, precision_t resultPrecision ) const;
-    Decimal operator / ( Decimal d2 ) const { Decimal res = *this; return res.div(d2, m_divisionPrecision); }
+    Decimal operator / (const Decimal &d2 ) const { Decimal res = *this; return res.div(d2, m_divisionPrecision); }
     // Decimal operator % ( Decimal d2 ) const;
-    Decimal& operator += ( Decimal d2 ) { return add(d2); }
-    Decimal& operator -= ( Decimal d2 ) { return sub(d2); }
-    Decimal& operator *= ( Decimal d2 ) { return mul(d2); }
-    Decimal& operator /= ( Decimal d2 ) { return div(d2, m_divisionPrecision); }
+    Decimal& operator += (const Decimal &d2 ) { return add(d2); }
+    Decimal& operator -= (const Decimal &d2 ) { return sub(d2); }
+    Decimal& operator *= (const Decimal &d2 ) { return mul(d2); }
+    Decimal& operator /= (const Decimal &d2 ) { return div(d2, m_divisionPrecision); }
     // Decimal& operator %= ( Decimal d2 );
 
     //----------------------------------------------------------------------------
+    #if 0
     #define MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE( integralType )         \
                                                                                                     \
                 Decimal operator +   ( integralType i ) const { return operator+ ( Decimal(i) ); }  \
@@ -330,7 +331,36 @@ public:
     MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE( std::uint64_t )
     MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE( float         )
     MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE( double        )
+    #endif
 
+    template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+    Decimal operator +   ( T i ) const { return operator+ ( Decimal(i) ); }
+
+    template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+    Decimal operator -   ( T i ) const { return operator- ( Decimal(i) ); }
+
+    template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+    Decimal operator *   ( T i ) const { return operator* ( Decimal(i) ); }
+
+    template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+    Decimal operator /   ( T i ) const { return operator/ ( Decimal(i) ); }
+
+    /* template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 > */ 
+    /*Decimal operator %   ( T i ) const { return operator% ( Decimal(i) ); }*/
+
+    template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+    Decimal& operator += ( T i )       { return operator+=( Decimal(i) ); }
+
+    template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+    Decimal& operator -= ( T i )       { return operator-=( Decimal(i) ); }
+
+    template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+    Decimal& operator *= ( T i )       { return operator*=( Decimal(i) ); }
+
+    template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+    Decimal& operator /= ( T i )       { return operator/=( Decimal(i) ); }
+
+    
 
 
     //------------------------------
@@ -594,6 +624,8 @@ std::ostream& operator<<( std::ostream& os, const Decimal &v )
 }
 
 //----------------------------------------------------------------------------
+#if 0
+
 #define MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE_FRIENDS( integralType )               \
                                                                                                       \
             inline Decimal operator +   ( integralType i, const Decimal d ) { return Decimal(i) + d; }  \
@@ -608,6 +640,24 @@ MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE_FRIENDS( std::in
 MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE_FRIENDS( std::uint64_t )
 MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE_FRIENDS( float         )
 MARTY_DECIMAL_IMPLEMENT_ARIPHMETICT_OVERLOADS_FOR_INTEGRAL_TYPE_FRIENDS( double        )
+
+#endif
+
+
+template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+inline Decimal operator +   ( T i, const Decimal d ) { return Decimal(i) + d; }
+
+template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+inline Decimal operator -   ( T i, const Decimal d ) { return Decimal(i) - d; }
+
+template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+inline Decimal operator *   ( T i, const Decimal d ) { return Decimal(i) * d; }
+
+template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
+inline Decimal operator /   ( T i, const Decimal d ) { return Decimal(i) / d; }
+
+
+// template < typename T, std::enable_if_t< std::is_arithmetic_v<T>, int> = 0 >
 
 
 // Obsilette
