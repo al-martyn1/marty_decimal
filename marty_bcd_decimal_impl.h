@@ -167,7 +167,7 @@ void Decimal::assignFromIntImpl( std::uint64_t u, int precision )
 
 //----------------------------------------------------------------------------
 inline
-void Decimal::assignFromDoubleImpl( double d, int precision )
+void Decimal::assignFromDoubleImpl( long double d, int precision )
 {
     if (precision<0)
         precision = 0;
@@ -178,14 +178,15 @@ void Decimal::assignFromDoubleImpl( double d, int precision )
     // https://docs.microsoft.com/en-us/cpp/c-runtime-library/format-specification-syntax-printf-and-wprintf-functions?view=msvc-160
     // printf( "%.*f", 3, 3.14159265 ); /* 3.142 output */
 
-    char buf[32]; // forever enough for all doubles
+    char buf[64]; // forever enough for all doubles
 
     #if defined(_MSC_VER)
         #pragma warning(push)
         #pragma warning(disable:4996) // - warning C4996: This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
     #endif
 
-    sprintf( &buf[0], "%.*f", precision, d );
+    // https://en.cppreference.com/w/cpp/io/c/fprintf
+    std::sprintf( &buf[0], "%.*Lf", precision, d );
 
     #if defined(_MSC_VER)
         #pragma warning(pop)

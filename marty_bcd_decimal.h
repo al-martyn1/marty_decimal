@@ -136,21 +136,29 @@ protected:
     void assignFromIntImpl( std::int64_t  i, int precision = 0 );
     void assignFromIntImpl( std::uint64_t u, int precision = 0 );
 
-    void assignFromDoubleImpl( double d, int precision = 15 );
+    void assignFromDoubleImpl( long double d, int precision = 18 );
 
 //----------------------------------------------------------------------------
 public:
 
 
     //------------------------------
+    // template < typename T, std::enable_if_t< std::is_integral_v<T>, int> = 0 >
+    // BigInt(T t) { assign(t); }
+    //  
+    // template < typename T, std::enable_if_t< std::is_integral_v<T>, int> = 0 >
+    // BigInt& operator=(T t) { assign(t); return *this; }
+
     #define MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_INT_METHODS( castType, intType )                                                           \
                   void assignFromInt( intType i, int precision = 0 )      { assignFromIntImpl( (castType)i ); m_precision = precision; }      \
                   static Decimal fromInt( intType i, int precision = 0 )  { Decimal res; res.assignFromInt(i, precision);  return res; }
 
     MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_INT_METHODS( std::int64_t , std::int64_t  )
     MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_INT_METHODS( std::int64_t , int           )
+    MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_INT_METHODS( std::int64_t , long          )
     MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_INT_METHODS( std::uint64_t, std::uint64_t )
     MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_INT_METHODS( std::uint64_t, unsigned      )
+    MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_INT_METHODS( std::uint64_t, unsigned long     )
 
 
     //------------------------------
@@ -158,8 +166,9 @@ public:
                   void assignFromFloat( floatType f, int precision = defPrecision )      { assignFromDoubleImpl( (castType)f, precision ); }             \
                   static Decimal fromFloat( floatType f, int precision = defPrecision )  { Decimal res; res.assignFromFloat(f, precision);  return res; }
 
-    MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_FLOAT_METHODS( double, double, std::numeric_limits<double>::digits10 /* 15 */  )
-    MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_FLOAT_METHODS( double, float , std::numeric_limits<float> ::digits10 /*  6 */  )
+    MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_FLOAT_METHODS( long double, long double, std::numeric_limits<long double>::digits10 /* 15 */  )
+    MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_FLOAT_METHODS( long double, double     , std::numeric_limits<double     > ::digits10 /*  6 */  )
+    MARTY_BCD_DECIMAL_CLASS_IMPLEMENT_FROM_FLOAT_METHODS( long double, float      , std::numeric_limits<float      > ::digits10 /*  6 */  )
 
 
     //------------------------------
@@ -240,25 +249,31 @@ public:
     Decimal( ) : m_number(), m_sign(0), m_precision(0) {}
     Decimal( const Decimal &d ) : m_number(d.m_number), m_sign(d.m_sign), m_precision(d.m_precision)  {}
 
-    Decimal( int            v, int precision = 0 )  { assignFromInt( v, precision ); }
-    Decimal( unsigned       v, int precision = 0 )  { assignFromInt( v, precision ); }
-    Decimal( std::int64_t   v, int precision = 0 )  { assignFromInt( v, precision ); }
-    Decimal( std::uint64_t  v, int precision = 0 )  { assignFromInt( v, precision ); }
 
+    template < typename T, std::enable_if_t< std::is_integral_v<T>, int> = 0 >
+    Decimal(T v, int precision = 0) { assignFromInt( v, precision ); }
+
+    template < typename T, std::enable_if_t< std::is_integral_v<T>, int> = 0 >
+    Decimal& operator=(T v) { assignFromInt( v, 0 ); return *this; }
+
+
+    Decimal( long double    d, int precision = 18 ) { assignFromFloat( d, precision ); }
     Decimal( double         d, int precision = 12 ) { assignFromFloat( d, precision ); }
     Decimal( float          d, int precision = 6 )  { assignFromFloat( d, precision ); }
+
+    template < typename T, std::enable_if_t< std::is_floating_point_v<T>, int> = 0 >
+    Decimal& operator=(T v) { assignFromFloat( v, 18 ); return *this; }
+
 
     Decimal( const char        *pStr ) { assignFromString( pStr ); }
     Decimal( const std::string &str  ) { assignFromString( str  ); }
 
-    #if defined(MARTY_DECIMAL_QT_USED)
 
-        Decimal( const QString     &str  ) { assignFromString( str.toStdString() ); }
-
-    #endif
+#if defined(MARTY_DECIMAL_QT_USED)
+    Decimal( const QString     &str  ) { assignFromString( str.toStdString() ); }
+#endif
 
     //------------------------------
-
 
 
 
